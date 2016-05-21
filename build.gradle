@@ -16,6 +16,12 @@ allprojects {
     repositories {
         jcenter()
     }
+
+    ext{
+        androidApplicationId = APPLICATION_ID
+        androidVersionCode = Integer.parseInt(VERSION_CODE)
+        androidVersionName= VERSION_NAME
+    }
 }
 
 task clean(type: Delete) {

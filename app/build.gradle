@@ -1,14 +1,15 @@
 apply plugin: 'com.android.library'
 
 android {
+    def globalDefinition = rootProject.extensions.getByName("ext")
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
 
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        versionCode globalDefinition.getAt("androidVersionCode")
+        versionName globalDefinition.getAt("androidVersionName")
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
