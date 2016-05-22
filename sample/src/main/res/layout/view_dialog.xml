@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dialog_content_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cardview_dark_background"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/feedback_dialog_frame_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacings_sixty">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/dialog_card_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacings_twelve"
+                android:layout_marginLeft="@dimen/spacings_twelve"
+                android:layout_marginRight="@dimen/spacings_twelve"
+                android:layout_marginTop="@dimen/spacings_twenty"
+                android:clickable="true"
+                android:background="@android:color/white"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="@dimen/spacings_six"
+                app:cardPreventCornerOverlap="false"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/spacings_eighteen"
+                    android:paddingLeft="@dimen/spacings_eighteen"
+                    android:paddingRight="@dimen/spacings_eighteen"
+                    android:paddingTop="@dimen/spacings_one_hundred_fifty_five">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/dialog_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacings_thirty_six"
+                        android:gravity="center"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/text_size_eighteen"
+                        tools:text="any title" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/dialog_subtitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacings_ten"
+                        android:gravity="center"
+                        android:paddingLeft="@dimen/spacings_twenty_four"
+                        android:paddingRight="@dimen/spacings_twenty_four"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/text_size_fifteen"
+                        tools:text="ONE TWO THREE FOUR FIVE SIX SEVEN EIGHT NINE TEN" />
+
+                    <android.support.v7.widget.AppCompatButton
+                        android:id="@+id/dialog_main_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacings_twenty_eight"
+                        android:stateListAnimator="@null"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/text_size_eighteen"
+                        tools:text="PRESS HERE" />
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/dialog_dimiss"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacings_twelve"
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_eighteen"
+                tools:text="CANCEL" />
+        </LinearLayout>
+    </FrameLayout>
+</LinearLayout>
