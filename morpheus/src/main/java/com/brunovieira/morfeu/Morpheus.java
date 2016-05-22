@@ -1,13 +1,19 @@
 package com.brunovieira.morfeu;
 
 import android.content.Context;
+import android.support.annotation.AnimRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
+import android.support.annotation.StyleRes;
 import android.support.v7.app.AppCompatDialog;
+import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+
+import com.brunovieira.morpheus.R;
 
 import java.util.HashMap;
 
@@ -16,6 +22,10 @@ import java.util.HashMap;
  */
 
 public class Morpheus extends AppCompatDialog {
+    public static final int TRANSLUCENT_THEME = R.style.DialogTranslucent;
+    public static final int ANIM_SPRING_IN = R.anim.anim_spring_in;
+    public static final int ANIM_SPRING_OUT = R.anim.anim_spring_out;
+
     Builder builder;
 
     private Morpheus(Builder builder, int theme) {
@@ -39,18 +49,26 @@ public class Morpheus extends AppCompatDialog {
         }
     }
 
-    public static class Builder {
+
+    public static class Builder implements View.OnClickListener {
         final Context context;
         int layoutResID;
         int themeId;
         int animStart;
         int animEnd;
+
         HashMap<Integer, Integer> contentAnimation = new HashMap<>();
         HashMap<Integer, Integer> contentImage = new HashMap<>();
         HashMap<Integer, CharSequence> contentText = new HashMap<>();
+        HashMap<Integer, Animation.AnimationListener> contentAnimationListener = new HashMap<>();
+        HashMap<Integer, ClickListener> contentClickListener = new HashMap<>();
 
         public Builder(@NonNull Context context) {
             this.context = context;
+        }
+
+        @Override
+        public void onClick(View view) {
         }
 
         public Builder addText(@IdRes int viewId, @StringRes int intRes) {
@@ -58,23 +76,17 @@ public class Morpheus extends AppCompatDialog {
             return this;
         }
 
-        public Builder addText(@IdRes int viewId, CharSequence charSequence) {
-            if (charSequence == null)
-                throw new IllegalArgumentException("sub title must be not null");
-
+        public Builder addText(@IdRes int viewId, @NonNull CharSequence charSequence) {
             contentText.put(viewId, charSequence);
             return this;
         }
 
-        public Builder addText(@IdRes int viewId, String string) {
-            if (string == null)
-                throw new IllegalArgumentException("sub title must be not null");
-
+        public Builder addText(@IdRes int viewId, @NonNull String string) {
             contentText.put(viewId, string);
             return this;
         }
 
-        public Builder theme(int themeId) {
+        public Builder theme(@StyleRes int themeId) {
             this.themeId = themeId;
             return this;
         }
@@ -84,8 +96,14 @@ public class Morpheus extends AppCompatDialog {
             return this;
         }
 
-        public Builder addViewToAnim(int id, int anim) {
+        public Builder addViewToAnim(@IdRes int id, @AnimRes int anim) {
             contentAnimation.put(id, anim);
+            return this;
+        }
+
+        public Builder addViewToAnim(@IdRes int id, @AnimRes int anim, @NonNull Animation.AnimationListener animationListener) {
+            contentAnimation.put(id, anim);
+            contentAnimationListener.put(id, animationListener);
             return this;
         }
 
@@ -100,7 +118,6 @@ public class Morpheus extends AppCompatDialog {
             return this;
         }
 
-
         public Morpheus show() {
             Morpheus morpheus;
             if (themeId != 0) {
@@ -111,5 +128,9 @@ public class Morpheus extends AppCompatDialog {
             morpheus.show();
             return morpheus;
         }
+    }
+
+    public interface ClickListener {
+        void onClick(@NonNull Builder builder, View view);
     }
 }
