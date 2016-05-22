@@ -1,6 +1,7 @@
 package com.brunovieira.morfeu;
 
 import android.view.View;
+import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -51,8 +52,14 @@ public class Initialize {
         while (iterator.hasNext()) {
             Map.Entry pairs = (Map.Entry) iterator.next();
             View view = morpheus.findViewById((Integer) pairs.getKey());
-            if (view != null)
-                view.startAnimation(AnimationUtils.loadAnimation(morpheus.builder.context, (Integer) pairs.getValue()));
+            if (view != null) {
+                Animation animation = AnimationUtils.loadAnimation(morpheus.builder.context, (Integer) pairs.getValue());
+                view.startAnimation(animation);
+                if(morpheus.builder.contentAnimationListener != null && morpheus.builder.contentAnimationListener.size() > 0) {
+                    Animation.AnimationListener animationListener = morpheus.builder.contentAnimationListener.get(pairs.getKey());
+                    animation.setAnimationListener(animationListener);
+                }
+            }
             iterator.remove();
         }
     }
