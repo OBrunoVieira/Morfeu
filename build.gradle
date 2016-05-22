@@ -8,8 +8,11 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:2.2.0-alpha1'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.3'
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.2'
     }
+}
+
+plugins {
+    id "com.jfrog.bintray" version "1.6"
 }
 
 allprojects {
@@ -26,24 +29,23 @@ allprojects {
     ext {
         androidApplicationId = APPLICATION_ID
         androidVersionCode = Integer.parseInt(VERSION_CODE)
-        androidVersionName = VERSION_NAME
+        androidVersionName = LIBRARY_VERSION
 
-
-        bintrayRepo = REPOSITORY
-        bintrayName = PUBLISH_ARTIFACT_ID
-        publishedGroupId = PUBLISH_GROUP_ID
-        libraryName = 'Morfeu'
-        artifact = VERSION_NAME
-        libraryDescription = 'A dialog library, that lets you customize it or use the default mode(that follows the material design pattern)'
+        bintrayRepo = BINTRAY_REPOSITORY
+        bintrayName = BINTRAY_NAME
+        publishedGroupId = GROUP_ID
+        libraryName = LIBRARY_NAME
+        artifact = LIBRARY_NAME
+        libraryDescription = LIBRARY_DESCRIPTION
         siteUrl = SITE_URL
         gitUrl = GIT_URL
-        libraryVersion = VERSION_NAME
-        developerId = BINTRAY_USER
-        developerName = 'Bruno Vieira'
-        developerEmail = 'brunovieiracrz@gmail.com'
-        licenseName = 'The Apache Software License, Version 2.0'
-        licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-        allLicenses = ["Apache-2.0"]
+        libraryVersion = LIBRARY_VERSION
+        developerId = DEVELOPER_ID
+        developerName = DEVELOPER_NAME
+        developerEmail = DEVELOPER_EMAIL
+        licenseName = LICENSE_NAME
+        licenseUrl = LICENSE_URL
+        allLicenses = ALL_LICENSES
     }
 }
 

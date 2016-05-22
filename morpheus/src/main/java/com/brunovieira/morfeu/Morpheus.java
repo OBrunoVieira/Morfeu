@@ -15,16 +15,16 @@ import java.util.HashMap;
  * Created by bruno.vieira on 20/05/2016.
  */
 
-public class Morfeu extends AppCompatDialog {
+public class Morpheus extends AppCompatDialog {
     Builder builder;
 
-    private Morfeu(Builder builder, int theme) {
+    private Morpheus(Builder builder, int theme) {
         super(builder.context, theme);
         this.builder = builder;
         Initialize.now(this);
     }
 
-    private Morfeu(Builder builder) {
+    private Morpheus(Builder builder) {
         super(builder.context);
         this.builder = builder;
         Initialize.now(this);
@@ -101,15 +101,15 @@ public class Morfeu extends AppCompatDialog {
         }
 
 
-        public Morfeu show() {
-            Morfeu morfeu;
+        public Morpheus show() {
+            Morpheus morpheus;
             if (themeId != 0) {
-                morfeu = new Morfeu(this, themeId);
+                morpheus = new Morpheus(this, themeId);
             } else {
-                morfeu = new Morfeu(this);
+                morpheus = new Morpheus(this);
             }
-            morfeu.show();
-            return morfeu;
+            morpheus.show();
+            return morpheus;
         }
     }
 }

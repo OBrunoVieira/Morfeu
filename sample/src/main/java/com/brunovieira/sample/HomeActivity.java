@@ -3,7 +3,7 @@ package com.brunovieira.sample;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.brunovieira.morfeu.Morfeu;
+import com.brunovieira.morfeu.Morpheus;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -12,7 +12,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        new Morfeu.Builder(this)
+        new Morpheus.Builder(this)
                 .show();
     }
 }

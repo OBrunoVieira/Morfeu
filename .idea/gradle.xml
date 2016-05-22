@@ -3,9 +3,15 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="distributionType" value="LOCAL" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/" />
-        <option name="gradleHome" value="C:\Users\bruno.vieira\Downloads\android-studio-ide-22\android-studio\gradle\gradle-2.10" />
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/morpheus" />
+            <option value="$PROJECT_DIR$/sample" />
+          </set>
+        </option>
       </GradleProjectSettings>
     </option>
   </component>
