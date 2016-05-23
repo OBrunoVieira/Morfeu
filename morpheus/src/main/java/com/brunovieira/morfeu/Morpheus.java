@@ -15,28 +15,36 @@ import android.view.animation.Animation;
 
 import com.brunovieira.morpheus.R;
 
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 
 /**
  * Created by bruno.vieira on 20/05/2016.
  */
 
-public class Morpheus extends AppCompatDialog {
+public class Morpheus extends AppCompatDialog implements View.OnClickListener {
     public static final int TRANSLUCENT_THEME = R.style.DialogTranslucent;
     public static final int ANIM_SPRING_IN = R.anim.anim_spring_in;
     public static final int ANIM_SPRING_OUT = R.anim.anim_spring_out;
 
     Builder builder;
 
+    static WeakReference<Morpheus> morpheus;
+
+
     private Morpheus(Builder builder, int theme) {
         super(builder.context, theme);
         this.builder = builder;
+
+        morpheus = new WeakReference<>(this);
         Initialize.now(this);
     }
 
     private Morpheus(Builder builder) {
         super(builder.context);
         this.builder = builder;
+
+        morpheus = new WeakReference<>(this);
         Initialize.now(this);
     }
 
@@ -49,8 +57,14 @@ public class Morpheus extends AppCompatDialog {
         }
     }
 
+    @Override
+    public void onClick(View view) {
+        if (view != null) {
+            builder.contentClickListener.get(view.getId()).onClick(this, view, builder);
+        }
+    }
 
-    public static class Builder implements View.OnClickListener {
+    public static class Builder {
         final Context context;
         int layoutResID;
         int themeId;
@@ -61,15 +75,12 @@ public class Morpheus extends AppCompatDialog {
         HashMap<Integer, Integer> contentImage = new HashMap<>();
         HashMap<Integer, CharSequence> contentText = new HashMap<>();
         HashMap<Integer, Animation.AnimationListener> contentAnimationListener = new HashMap<>();
-        HashMap<Integer, ClickListener> contentClickListener = new HashMap<>();
+        HashMap<Integer, ClickCallback> contentClickListener = new HashMap<>();
 
         public Builder(@NonNull Context context) {
             this.context = context;
         }
 
-        @Override
-        public void onClick(View view) {
-        }
 
         public Builder addText(@IdRes int viewId, @StringRes int intRes) {
             addText(viewId, this.context.getString(intRes));
@@ -107,6 +118,15 @@ public class Morpheus extends AppCompatDialog {
             return this;
         }
 
+        public Builder addClickToView(@IdRes int id, @NonNull ClickCallback clickCallback) {
+            contentClickListener.put(id, clickCallback);
+            return this;
+        }
+
+        public Builder dismissListener(@NonNull OnDismissListener onDismissListener) {
+            return this;
+        }
+
         public Builder addImage(int id, @DrawableRes int drawable) {
             contentImage.put(id, drawable);
             return this;
@@ -117,6 +137,12 @@ public class Morpheus extends AppCompatDialog {
             this.animEnd = animEnd;
             return this;
         }
+
+        public Morpheus startAnimation() {
+            Initialize.startAnimation(morpheus.get());
+            return morpheus.get();
+        }
+
 
         public Morpheus show() {
             Morpheus morpheus;
@@ -130,7 +156,7 @@ public class Morpheus extends AppCompatDialog {
         }
     }
 
-    public interface ClickListener {
-        void onClick(@NonNull Builder builder, View view);
+    public interface ClickCallback {
+        void onClick(@NonNull Morpheus dialog, @NonNull View view, Builder builder);
     }
 }
