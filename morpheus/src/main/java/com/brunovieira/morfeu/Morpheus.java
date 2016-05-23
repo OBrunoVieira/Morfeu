@@ -13,8 +13,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 
-import com.brunovieira.morpheus.R;
-
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 
@@ -23,13 +21,13 @@ import java.util.HashMap;
  */
 
 public class Morpheus extends AppCompatDialog implements View.OnClickListener {
-    public static final int TRANSLUCENT_THEME = R.style.DialogTranslucent;
-    public static final int ANIM_SPRING_IN = R.anim.anim_spring_in;
-    public static final int ANIM_SPRING_OUT = R.anim.anim_spring_out;
+//    public static final int TRANSLUCENT_THEME = R.style.DialogTranslucent;
+//    public static final int ANIM_SPRING_IN = R.anim.anim_spring_in;
+//    public static final int ANIM_SPRING_OUT = R.anim.anim_spring_out;
 
     Builder builder;
 
-    static WeakReference<Morpheus> morpheus;
+    private static WeakReference<Morpheus> morpheus;
 
 
     private Morpheus(Builder builder, int theme) {
