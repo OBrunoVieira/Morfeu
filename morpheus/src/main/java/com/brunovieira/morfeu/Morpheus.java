@@ -1,5 +1,7 @@
 package com.brunovieira.morfeu;
 
+import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.support.annotation.AnimRes;
@@ -79,6 +81,10 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener {
 
         public Builder(@NonNull Context context) {
             this.context = context;
+        }
+
+        public Builder(@NonNull android.support.v4.app.Fragment fragment) {
+            this.context = fragment.getContext();
         }
 
         public Builder addFontType(@IdRes int viewId, @NonNull Typeface typeface){
