@@ -1,6 +1,7 @@
 package com.brunovieira.morfeu;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.annotation.AnimRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
@@ -74,11 +75,33 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener {
         HashMap<Integer, CharSequence> contentText = new HashMap<>();
         HashMap<Integer, Animation.AnimationListener> contentAnimationListener = new HashMap<>();
         HashMap<Integer, ClickCallback> contentClickListener = new HashMap<>();
+        HashMap<Integer, Typeface> contentTypeFace = new HashMap<>();
 
         public Builder(@NonNull Context context) {
             this.context = context;
         }
 
+        public Builder addFontType(@IdRes int viewId, @NonNull Typeface typeface){
+            contentTypeFace.put(viewId, typeface);
+            return this;
+        }
+
+        public Builder addText(@IdRes int viewId, @StringRes int intRes, @NonNull Typeface typeface) {
+            addText(viewId, this.context.getString(intRes), typeface);
+            return this;
+        }
+
+        public Builder addText(@IdRes int viewId, @NonNull CharSequence charSequence, @NonNull Typeface typeface) {
+            contentText.put(viewId, charSequence);
+            contentTypeFace.put(viewId, typeface);
+            return this;
+        }
+
+        public Builder addText(@IdRes int viewId, @NonNull String string, @NonNull Typeface typeface) {
+            contentText.put(viewId, string);
+            contentTypeFace.put(viewId, typeface);
+            return this;
+        }
 
         public Builder addText(@IdRes int viewId, @StringRes int intRes) {
             addText(viewId, this.context.getString(intRes));
@@ -121,10 +144,6 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener {
             return this;
         }
 
-        public Builder dismissListener(@NonNull OnDismissListener onDismissListener) {
-            return this;
-        }
-
         public Builder addImage(int id, @DrawableRes int drawable) {
             contentImage.put(id, drawable);
             return this;
@@ -140,7 +159,6 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener {
             Initialize.startAnimation(morpheus.get());
             return morpheus.get();
         }
-
 
         public Morpheus show() {
             Morpheus morpheus;

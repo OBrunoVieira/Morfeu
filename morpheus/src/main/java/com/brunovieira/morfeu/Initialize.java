@@ -27,9 +27,8 @@ public class Initialize {
 
     private static void clickListenerSetup(final @NonNull Morpheus morpheus) {
         if (morpheus.builder.contentClickListener.size() > 0 && morpheus.builder.contentClickListener != null) {
-            Iterator iterator = morpheus.builder.contentClickListener.entrySet().iterator();
-            while (iterator.hasNext()) {
-                Map.Entry pairs = (Map.Entry) iterator.next();
+            for (Object object : morpheus.builder.contentClickListener.entrySet()) {
+                Map.Entry pairs = (Map.Entry) object;
                 View view = morpheus.findViewById((Integer) pairs.getKey());
                 if (view != null) {
                     view.setOnClickListener(morpheus);
@@ -45,6 +44,9 @@ public class Initialize {
             TextView textView = (TextView) morpheus.findViewById((Integer) pairs.getKey());
             if (textView != null) {
                 textView.setText((CharSequence) pairs.getValue());
+                if (morpheus.builder.contentTypeFace.size() > 0 && morpheus.builder.contentTypeFace != null) {
+                    textView.setTypeface(morpheus.builder.contentTypeFace.get(textView.getId()));
+                }
             }
             iterator.remove();
         }
@@ -63,15 +65,14 @@ public class Initialize {
     }
 
     private static void animViewSetup(@NonNull Morpheus morpheus) {
-        Iterator iterator = morpheus.builder.contentAnimation.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry pairs = (Map.Entry) iterator.next();
+        for (Object object : morpheus.builder.contentAnimation.entrySet()) {
+            Map.Entry pairs = (Map.Entry) object;
             View view = morpheus.findViewById((Integer) pairs.getKey());
             if (view != null) {
                 Animation animation = AnimationUtils.loadAnimation(morpheus.builder.context, (Integer) pairs.getValue());
                 view.startAnimation(animation);
                 if (morpheus.builder.contentAnimationListener != null && morpheus.builder.contentAnimationListener.size() > 0) {
-                    Animation.AnimationListener animationListener = morpheus.builder.contentAnimationListener.get(pairs.getKey());
+                    Animation.AnimationListener animationListener = morpheus.builder.contentAnimationListener.get(view.getId());
                     animation.setAnimationListener(animationListener);
                 }
             }
