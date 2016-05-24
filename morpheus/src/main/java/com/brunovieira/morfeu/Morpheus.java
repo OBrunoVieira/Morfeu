@@ -1,32 +1,49 @@
 package com.brunovieira.morfeu;
 
 import android.content.Context;
+import android.graphics.Typeface;
+import android.support.annotation.AnimRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
+import android.support.annotation.StyleRes;
 import android.support.v7.app.AppCompatDialog;
+import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
 
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 
 /**
  * Created by bruno.vieira on 20/05/2016.
  */
 
-public class Morpheus extends AppCompatDialog {
+public class Morpheus extends AppCompatDialog implements View.OnClickListener {
+//    public static final int TRANSLUCENT_THEME = R.style.DialogTranslucent;
+//    public static final int ANIM_SPRING_IN = R.anim.anim_spring_in;
+//    public static final int ANIM_SPRING_OUT = R.anim.anim_spring_out;
+
     Builder builder;
+
+    private static WeakReference<Morpheus> morpheus;
+
 
     private Morpheus(Builder builder, int theme) {
         super(builder.context, theme);
         this.builder = builder;
+
+        morpheus = new WeakReference<>(this);
         Initialize.now(this);
     }
 
     private Morpheus(Builder builder) {
         super(builder.context);
         this.builder = builder;
+
+        morpheus = new WeakReference<>(this);
         Initialize.now(this);
     }
 
@@ -39,18 +56,51 @@ public class Morpheus extends AppCompatDialog {
         }
     }
 
+    @Override
+    public void onClick(View view) {
+        if (view != null) {
+            builder.contentClickListener.get(view.getId()).onClick(this, view, builder);
+        }
+    }
+
     public static class Builder {
         final Context context;
         int layoutResID;
         int themeId;
         int animStart;
         int animEnd;
+
         HashMap<Integer, Integer> contentAnimation = new HashMap<>();
         HashMap<Integer, Integer> contentImage = new HashMap<>();
         HashMap<Integer, CharSequence> contentText = new HashMap<>();
+        HashMap<Integer, Animation.AnimationListener> contentAnimationListener = new HashMap<>();
+        HashMap<Integer, ClickCallback> contentClickListener = new HashMap<>();
+        HashMap<Integer, Typeface> contentTypeFace = new HashMap<>();
 
         public Builder(@NonNull Context context) {
             this.context = context;
+        }
+
+        public Builder addFontType(@IdRes int viewId, @NonNull Typeface typeface){
+            contentTypeFace.put(viewId, typeface);
+            return this;
+        }
+
+        public Builder addText(@IdRes int viewId, @StringRes int intRes, @NonNull Typeface typeface) {
+            addText(viewId, this.context.getString(intRes), typeface);
+            return this;
+        }
+
+        public Builder addText(@IdRes int viewId, @NonNull CharSequence charSequence, @NonNull Typeface typeface) {
+            contentText.put(viewId, charSequence);
+            contentTypeFace.put(viewId, typeface);
+            return this;
+        }
+
+        public Builder addText(@IdRes int viewId, @NonNull String string, @NonNull Typeface typeface) {
+            contentText.put(viewId, string);
+            contentTypeFace.put(viewId, typeface);
+            return this;
         }
 
         public Builder addText(@IdRes int viewId, @StringRes int intRes) {
@@ -58,23 +108,17 @@ public class Morpheus extends AppCompatDialog {
             return this;
         }
 
-        public Builder addText(@IdRes int viewId, CharSequence charSequence) {
-            if (charSequence == null)
-                throw new IllegalArgumentException("sub title must be not null");
-
+        public Builder addText(@IdRes int viewId, @NonNull CharSequence charSequence) {
             contentText.put(viewId, charSequence);
             return this;
         }
 
-        public Builder addText(@IdRes int viewId, String string) {
-            if (string == null)
-                throw new IllegalArgumentException("sub title must be not null");
-
+        public Builder addText(@IdRes int viewId, @NonNull String string) {
             contentText.put(viewId, string);
             return this;
         }
 
-        public Builder theme(int themeId) {
+        public Builder theme(@StyleRes int themeId) {
             this.themeId = themeId;
             return this;
         }
@@ -84,8 +128,19 @@ public class Morpheus extends AppCompatDialog {
             return this;
         }
 
-        public Builder addViewToAnim(int id, int anim) {
+        public Builder addViewToAnim(@IdRes int id, @AnimRes int anim) {
             contentAnimation.put(id, anim);
+            return this;
+        }
+
+        public Builder addViewToAnim(@IdRes int id, @AnimRes int anim, @NonNull Animation.AnimationListener animationListener) {
+            contentAnimation.put(id, anim);
+            contentAnimationListener.put(id, animationListener);
+            return this;
+        }
+
+        public Builder addClickToView(@IdRes int id, @NonNull ClickCallback clickCallback) {
+            contentClickListener.put(id, clickCallback);
             return this;
         }
 
@@ -100,6 +155,10 @@ public class Morpheus extends AppCompatDialog {
             return this;
         }
 
+        public Morpheus startAnimation() {
+            Initialize.startAnimation(morpheus.get());
+            return morpheus.get();
+        }
 
         public Morpheus show() {
             Morpheus morpheus;
@@ -111,5 +170,9 @@ public class Morpheus extends AppCompatDialog {
             morpheus.show();
             return morpheus;
         }
+    }
+
+    public interface ClickCallback {
+        void onClick(@NonNull Morpheus dialog, @NonNull View view, Builder builder);
     }
 }
