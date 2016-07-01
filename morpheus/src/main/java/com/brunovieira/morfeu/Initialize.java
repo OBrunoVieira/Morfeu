@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,13 +17,16 @@ import java.util.Map;
 
 public class Initialize {
     static void now(@NonNull Morpheus morpheus) {
-        if (morpheus.builder.layoutResID != 0)
-            morpheus.setContentView(morpheus.builder.layoutResID);
-
+        morpheusLayoutSetup(morpheus);
         textViewSetup(morpheus);
         imageViewSetup(morpheus);
         animViewSetup(morpheus);
         clickListenerSetup(morpheus);
+    }
+
+    private static void morpheusLayoutSetup(@NonNull Morpheus morpheus) {
+        if (morpheus.builder.layoutResID != 0)
+            morpheus.setContentView(morpheus.builder.layoutResID);
     }
 
     private static void clickListenerSetup(final @NonNull Morpheus morpheus) {
@@ -41,11 +45,19 @@ public class Initialize {
         Iterator iterator = morpheus.builder.contentText.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry pairs = (Map.Entry) iterator.next();
-            TextView textView = (TextView) morpheus.findViewById((Integer) pairs.getKey());
-            if (textView != null) {
-                textView.setText((CharSequence) pairs.getValue());
-                if (morpheus.builder.contentTypeFace.size() > 0 && morpheus.builder.contentTypeFace != null) {
-                    textView.setTypeface(morpheus.builder.contentTypeFace.get(textView.getId()));
+            View view = morpheus.findViewById((Integer) pairs.getKey());
+            if (view != null) {
+                if (view instanceof TextView) {
+                    ((TextView) view).setText((CharSequence) pairs.getValue());
+                    if (morpheus.builder.contentTypeFace.size() > 0 && morpheus.builder.contentTypeFace != null) {
+                        ((TextView) view).setTypeface(morpheus.builder.contentTypeFace.get(view.getId()));
+                    }
+
+                    if (morpheus.builder.contentImageButton.size() > 0
+                            && morpheus.builder.contentImageButton != null
+                            && morpheus.builder.contentImageButton.get(pairs.getKey()) != null) {
+                        view.setBackgroundResource(morpheus.builder.contentImageButton.get(pairs.getKey()));
+                    }
                 }
             }
             iterator.remove();

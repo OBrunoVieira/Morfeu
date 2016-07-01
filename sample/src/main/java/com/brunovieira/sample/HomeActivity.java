@@ -26,7 +26,7 @@ public class HomeActivity extends AppCompatActivity {
                             .addText(R.id.dialog_title, "AnyTitle")
                             .addText(R.id.dialog_subtitle, "WERTYUIOPSDFGHJKLSADFGH SADFGHJKLSADFGHJK DSFGHDSFG")
                             .addText(R.id.dialog_dimiss, "Cancel")
-                            .addClickToView(R.id.dialog_dimiss, new Morpheus.ClickCallback() {
+                            .addClickToView(R.id.dialog_main_button, new Morpheus.ClickCallback() {
                                 @Override
                                 public void onClick(@NonNull final Morpheus dialog, @NonNull View view, Morpheus.Builder builder) {
                                     builder.addViewToAnim(R.id.dialog_content_main, android.R.anim.fade_out)
@@ -49,6 +49,7 @@ public class HomeActivity extends AppCompatActivity {
                                             .startAnimation();
                                 }
                             })
+                            .addButton(R.id.dialog_main_button, android.R.drawable.sym_def_app_icon, "press here")
                             .addViewToAnim(R.id.dialog_content_main, android.R.anim.fade_in)
                             .addViewToAnim(R.id.feedback_dialog_frame_content, Morpheus.ANIM_SPRING_IN)
                             .show();
