@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.Animation;
 
-import com.brunovieira.morfeu.Morpheus;
+import com.brunovieira.morpheus.Morpheus;
 
 public class HomeActivity extends AppCompatActivity {
 

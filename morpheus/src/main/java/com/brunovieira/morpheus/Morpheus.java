@@ -1,4 +1,4 @@
-package com.brunovieira.morfeu;
+package com.brunovieira.morpheus;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -13,8 +13,6 @@ import android.support.v7.app.AppCompatDialog;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
-
-import com.brunovieira.morpheus.R;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
