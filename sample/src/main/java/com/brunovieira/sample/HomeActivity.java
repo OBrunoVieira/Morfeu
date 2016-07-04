@@ -1,5 +1,6 @@
 package com.brunovieira.sample;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -31,14 +32,20 @@ public class HomeActivity extends AppCompatActivity implements Morpheus.ClickCal
         new Morpheus.Builder(this)
                 .contentView(R.layout.view_dialog)
                 .theme(Morpheus.TRANSLUCENT_THEME)
-                .addText(R.id.dialog_title, "AnyTitle")
-                .addText(R.id.dialog_subtitle, "WERTYUIOPSDFGHJKLSADFGH SADFGHJKLSADFGHJK DSFGHDSFG")
+                .addText(R.id.dialog_title, "Lorem ipsum dolor sit amet.")
+                .addText(R.id.dialog_subtitle, "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...")
                 .addText(R.id.dialog_dimiss, "Cancel")
                 .addClickToView(R.id.dialog_main_button, this)
                 .addTag(R.id.dialog_main_button, new Morpheus.Tag(TAG))
-                .addButton(R.id.dialog_main_button, "press here")
+                .addButton(R.id.dialog_main_button, "Lorem Ipsum")
                 .addViewToAnim(R.id.dialog_content_main, android.R.anim.fade_in)
                 .addViewToAnim(R.id.feedback_dialog_frame_content, Morpheus.ANIM_SPRING_IN)
+                .cancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+
+                    }
+                })
                 .show();
     }
 
