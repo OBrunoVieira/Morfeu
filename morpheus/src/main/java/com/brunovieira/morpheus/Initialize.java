@@ -1,6 +1,8 @@
 package com.brunovieira.morpheus;
 
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -17,18 +19,37 @@ import java.util.Map;
 public class Initialize {
     static void now(@NonNull Morpheus morpheus) {
         morpheusLayoutSetup(morpheus);
-        textViewSetup(morpheus);
-        imageViewSetup(morpheus);
-        animViewSetup(morpheus);
-        clickListenerSetup(morpheus);
+        setupTextView(morpheus);
+        setupImageView(morpheus);
+        setupAnimView(morpheus);
+        setupClickListener(morpheus);
+        setupViewTags(morpheus);
     }
 
     private static void morpheusLayoutSetup(@NonNull Morpheus morpheus) {
-        if (morpheus.builder.layoutResID != 0)
+        if (morpheus.builder.layoutResID != 0) {
             morpheus.setContentView(morpheus.builder.layoutResID);
+        }
     }
 
-    private static void clickListenerSetup(final @NonNull Morpheus morpheus) {
+    private static void setupViewTags(@NonNull Morpheus morpheus) {
+        if (morpheus.builder.contentTag.size() > 0 && morpheus.builder.contentTag != null) {
+            for (Object object : morpheus.builder.contentTag.entrySet()) {
+                Map.Entry pairs = (Map.Entry) object;
+                View view = morpheus.findViewById((Integer) pairs.getKey());
+                if (view != null) {
+                    Morpheus.Tag tag = (Morpheus.Tag) pairs.getValue();
+                    if (tag.getKey() != 0 && tag.getTag() != null) {
+                        view.setTag(tag.getKey(), tag.getTag());
+                    } else if (tag.getTag() != null) {
+                        view.setTag(tag.getTag());
+                    }
+                }
+            }
+        }
+    }
+
+    private static void setupClickListener(final @NonNull Morpheus morpheus) {
         if (morpheus.builder.contentClickListener.size() > 0 && morpheus.builder.contentClickListener != null) {
             for (Object object : morpheus.builder.contentClickListener.entrySet()) {
                 Map.Entry pairs = (Map.Entry) object;
@@ -40,7 +61,7 @@ public class Initialize {
         }
     }
 
-    private static void textViewSetup(@NonNull Morpheus morpheus) {
+    private static void setupTextView(@NonNull Morpheus morpheus) {
         Iterator iterator = morpheus.builder.contentText.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry pairs = (Map.Entry) iterator.next();
@@ -55,7 +76,15 @@ public class Initialize {
                     if (morpheus.builder.contentImageButton.size() > 0
                             && morpheus.builder.contentImageButton != null
                             && morpheus.builder.contentImageButton.get(pairs.getKey()) != null) {
-                        view.setBackgroundResource(morpheus.builder.contentImageButton.get(pairs.getKey()));
+                        Drawable drawable = ContextCompat.getDrawable(morpheus.getContext(),
+                                morpheus.builder.contentImageButton.get(pairs.getKey()));
+
+                        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                            view.setBackgroundDrawable(drawable);
+                        } else {
+                            view.setBackground(drawable);
+                        }
+
                     }
                 }
             }
@@ -63,7 +92,7 @@ public class Initialize {
         }
     }
 
-    private static void imageViewSetup(@NonNull Morpheus morpheus) {
+    private static void setupImageView(@NonNull Morpheus morpheus) {
         Iterator iterator = morpheus.builder.contentImage.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry pairs = (Map.Entry) iterator.next();
@@ -75,7 +104,7 @@ public class Initialize {
         }
     }
 
-    private static void animViewSetup(@NonNull Morpheus morpheus) {
+    private static void setupAnimView(@NonNull Morpheus morpheus) {
         for (Object object : morpheus.builder.contentAnimation.entrySet()) {
             Map.Entry pairs = (Map.Entry) object;
             View view = morpheus.findViewById((Integer) pairs.getKey());
@@ -91,6 +120,6 @@ public class Initialize {
     }
 
     public static void startAnimation(@NonNull Morpheus morpheus) {
-        animViewSetup(morpheus);
+        setupAnimView(morpheus);
     }
 }
