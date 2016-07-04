@@ -1,4 +1,4 @@
-package com.brunovieira.morfeu;
+package com.brunovieira.morpheus;
 
 import org.junit.Test;
 

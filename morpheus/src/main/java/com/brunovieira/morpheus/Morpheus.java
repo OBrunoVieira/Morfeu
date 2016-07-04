@@ -1,12 +1,11 @@
-package com.brunovieira.morfeu;
+package com.brunovieira.morpheus;
 
-import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.support.annotation.AnimRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
+import android.support.annotation.IntegerRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
@@ -24,13 +23,11 @@ import java.util.HashMap;
  */
 
 public class Morpheus extends AppCompatDialog implements View.OnClickListener {
-//    public static final int TRANSLUCENT_THEME = R.style.DialogTranslucent;
-//    public static final int ANIM_SPRING_IN = R.anim.anim_spring_in;
-//    public static final int ANIM_SPRING_OUT = R.anim.anim_spring_out;
-
-    Builder builder;
-
+    public static final int TRANSLUCENT_THEME = R.style.DialogTranslucent;
+    public static final int ANIM_SPRING_IN = R.anim.anim_spring_in;
+    public static final int ANIM_SPRING_OUT = R.anim.anim_spring_out;
     private static WeakReference<Morpheus> morpheus;
+    Builder builder;
 
 
     private Morpheus(Builder builder, int theme) {
@@ -61,23 +58,39 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         if (view != null) {
-            builder.contentClickListener.get(view.getId()).onClick(this, view, builder);
+            builder.contentClickListener.get(view.getId()).onClickDialog(this, view, builder);
         }
+    }
+
+    @Override
+    public void dismiss() {
+        builder.contentAnimation = null;
+        builder.contentImage = null;
+        builder.contentImageButton = null;
+        builder.contentText = null;
+        builder.contentAnimationListener = null;
+        builder.contentClickListener = null;
+        builder.contentTypeFace = null;
+        super.dismiss();
+    }
+
+    public interface ClickCallback {
+        void onClickDialog(@NonNull Morpheus dialog, @NonNull View view, Builder builder);
     }
 
     public static class Builder {
         final Context context;
         int layoutResID;
         int themeId;
-        int animStart;
-        int animEnd;
 
         HashMap<Integer, Integer> contentAnimation = new HashMap<>();
         HashMap<Integer, Integer> contentImage = new HashMap<>();
+        HashMap<Integer, Integer> contentImageButton = new HashMap<>();
         HashMap<Integer, CharSequence> contentText = new HashMap<>();
         HashMap<Integer, Animation.AnimationListener> contentAnimationListener = new HashMap<>();
         HashMap<Integer, ClickCallback> contentClickListener = new HashMap<>();
         HashMap<Integer, Typeface> contentTypeFace = new HashMap<>();
+        HashMap<Integer, Tag> contentTag = new HashMap<>();
 
         public Builder(@NonNull Context context) {
             this.context = context;
@@ -87,8 +100,57 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener {
             this.context = fragment.getContext();
         }
 
-        public Builder addFontType(@IdRes int viewId, @NonNull Typeface typeface){
+        public Builder addTag(@IdRes int viewId, @NonNull Tag tag) {
+            this.contentTag.put(viewId, tag);
+            return this;
+        }
+
+        public Builder addFontType(@IdRes int viewId, @NonNull Typeface typeface) {
             contentTypeFace.put(viewId, typeface);
+            return this;
+        }
+
+        public Builder addButton(@IdRes int viewId, @StringRes int intRes, @NonNull Typeface typeface) {
+            addButton(viewId, this.context.getString(intRes), typeface);
+            return this;
+        }
+
+        public Builder addButton(@IdRes int viewId, @NonNull CharSequence charSequence, @NonNull Typeface typeface) {
+            contentText.put(viewId, charSequence);
+            contentTypeFace.put(viewId, typeface);
+            return this;
+        }
+
+        public Builder addButton(@IdRes int viewId, @StringRes int intRes) {
+            addButton(viewId, this.context.getString(intRes));
+            return this;
+        }
+
+        public Builder addButton(@IdRes int viewId, @NonNull CharSequence charSequence) {
+            contentText.put(viewId, charSequence);
+            return this;
+        }
+
+        public Builder addButton(@IdRes int viewId, @DrawableRes int drawable, @StringRes int intRes) {
+            addButton(viewId, drawable, this.context.getString(intRes));
+            return this;
+        }
+
+        public Builder addButton(@IdRes int viewId, @DrawableRes int drawable, @NonNull CharSequence charSequence) {
+            contentText.put(viewId, charSequence);
+            contentImageButton.put(viewId, drawable);
+            return this;
+        }
+
+        public Builder addButton(@IdRes int viewId, @DrawableRes int drawable, @StringRes int intRes, @NonNull Typeface typeface) {
+            addButton(viewId, drawable, this.context.getString(intRes), typeface);
+            return this;
+        }
+
+        public Builder addButton(@IdRes int viewId, @DrawableRes int drawable, @NonNull CharSequence charSequence, @NonNull Typeface typeface) {
+            contentText.put(viewId, charSequence);
+            contentTypeFace.put(viewId, typeface);
+            contentImageButton.put(viewId, drawable);
             return this;
         }
 
@@ -103,12 +165,6 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener {
             return this;
         }
 
-        public Builder addText(@IdRes int viewId, @NonNull String string, @NonNull Typeface typeface) {
-            contentText.put(viewId, string);
-            contentTypeFace.put(viewId, typeface);
-            return this;
-        }
-
         public Builder addText(@IdRes int viewId, @StringRes int intRes) {
             addText(viewId, this.context.getString(intRes));
             return this;
@@ -116,11 +172,6 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener {
 
         public Builder addText(@IdRes int viewId, @NonNull CharSequence charSequence) {
             contentText.put(viewId, charSequence);
-            return this;
-        }
-
-        public Builder addText(@IdRes int viewId, @NonNull String string) {
-            contentText.put(viewId, string);
             return this;
         }
 
@@ -155,12 +206,6 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener {
             return this;
         }
 
-        public Builder anim(int animStart, int animEnd) {
-            this.animStart = animStart;
-            this.animEnd = animEnd;
-            return this;
-        }
-
         public Morpheus startAnimation() {
             Initialize.startAnimation(morpheus.get());
             return morpheus.get();
@@ -178,7 +223,30 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener {
         }
     }
 
-    public interface ClickCallback {
-        void onClick(@NonNull Morpheus dialog, @NonNull View view, Builder builder);
+    public static class Tag {
+        @IntegerRes
+        private int key;
+
+        private Object tag;
+
+        public Tag(int key, Object tag) {
+            this.key = key;
+            this.tag = tag;
+        }
+
+        public Tag(Object tag) {
+            this.tag = tag;
+        }
+
+        public Tag() {
+        }
+
+        public int getKey() {
+            return key;
+        }
+
+        public Object getTag() {
+            return tag;
+        }
     }
 }

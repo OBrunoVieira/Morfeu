@@ -29,8 +29,8 @@
                 android:layout_marginLeft="@dimen/spacings_twelve"
                 android:layout_marginRight="@dimen/spacings_twelve"
                 android:layout_marginTop="@dimen/spacings_twenty"
-                android:clickable="true"
                 android:background="@android:color/white"
+                android:clickable="true"
                 app:cardBackgroundColor="@android:color/white"
                 app:cardCornerRadius="@dimen/spacings_six"
                 app:cardPreventCornerOverlap="false"
@@ -72,7 +72,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/spacings_twenty_eight"
-                        android:stateListAnimator="@null"
                         android:textColor="@android:color/white"
                         android:textSize="@dimen/text_size_eighteen"
                         tools:text="PRESS HERE" />
