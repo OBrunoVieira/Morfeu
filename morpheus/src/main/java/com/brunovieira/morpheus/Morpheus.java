@@ -92,6 +92,10 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener {
         HashMap<Integer, Typeface> contentTypeFace = new HashMap<>();
         HashMap<Integer, Tag> contentTag = new HashMap<>();
 
+        OnCancelListener onCancelListener;
+        OnDismissListener onDismissListener;
+        OnShowListener onShowListener;
+
         public Builder(@NonNull Context context) {
             this.context = context;
         }
@@ -203,6 +207,21 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener {
 
         public Builder addImage(int id, @DrawableRes int drawable) {
             contentImage.put(id, drawable);
+            return this;
+        }
+
+        public Builder cancelListener(@NonNull OnCancelListener onCancelListener) {
+            this.onCancelListener = onCancelListener;
+            return this;
+        }
+
+        public Builder dismissListener(@NonNull OnDismissListener onDismissListener) {
+            this.onDismissListener = onDismissListener;
+            return this;
+        }
+
+        public Builder showListener(@NonNull OnShowListener onShowListener) {
+            this.onShowListener = onShowListener;
             return this;
         }
 

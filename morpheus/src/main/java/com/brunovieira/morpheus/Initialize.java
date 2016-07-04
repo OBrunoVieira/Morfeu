@@ -24,11 +24,26 @@ public class Initialize {
         setupAnimView(morpheus);
         setupClickListener(morpheus);
         setupViewTags(morpheus);
+        setupStaticListeners(morpheus);
     }
 
     private static void morpheusLayoutSetup(@NonNull Morpheus morpheus) {
         if (morpheus.builder.layoutResID != 0) {
             morpheus.setContentView(morpheus.builder.layoutResID);
+        }
+    }
+
+    private static void setupStaticListeners(@NonNull Morpheus morpheus) {
+        if (morpheus.builder.onCancelListener != null) {
+            morpheus.setOnCancelListener(morpheus.builder.onCancelListener);
+        }
+
+        if (morpheus.builder.onDismissListener != null) {
+            morpheus.setOnDismissListener(morpheus.builder.onDismissListener);
+        }
+
+        if (morpheus.builder.onShowListener != null) {
+            morpheus.setOnShowListener(morpheus.builder.onShowListener);
         }
     }
 
