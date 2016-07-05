@@ -1,6 +1,7 @@
 package com.brunovieira.morpheus;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.support.annotation.AnimRes;
 import android.support.annotation.DrawableRes;
@@ -22,7 +23,7 @@ import java.util.HashMap;
  * Created by bruno.vieira on 20/05/2016.
  */
 
-public class Morpheus extends AppCompatDialog implements View.OnClickListener {
+public class Morpheus extends AppCompatDialog implements View.OnClickListener, DialogInterface.OnCancelListener, DialogInterface.OnShowListener, DialogInterface.OnDismissListener {
     public static final int TRANSLUCENT_THEME = R.style.DialogTranslucent;
     public static final int ANIM_SPRING_IN = R.anim.anim_spring_in;
     public static final int ANIM_SPRING_OUT = R.anim.anim_spring_out;
@@ -74,8 +75,35 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener {
         super.dismiss();
     }
 
-    public interface ClickCallback {
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        builder.onCancelListener.onCancelDialog(this, builder);
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        builder.onCancelListener.onCancelDialog(this, builder);
+    }
+
+    @Override
+    public void onShow(DialogInterface dialog) {
+        builder.onCancelListener.onCancelDialog(this, builder);
+    }
+
+    public interface OnClickListener {
         void onClickDialog(@NonNull Morpheus dialog, @NonNull View view, Builder builder);
+    }
+
+    public interface OnCancelListener {
+        void onCancelDialog(@NonNull Morpheus dialog, Builder builder);
+    }
+
+    public interface OnDismissListener {
+        void onDismissDialog(@NonNull Morpheus dialog, Builder builder);
+    }
+
+    public interface OnShowListener {
+        void onShowDialog(@NonNull Morpheus dialog, Builder builder);
     }
 
     public static class Builder {
@@ -88,7 +116,7 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener {
         HashMap<Integer, Integer> contentImageButton = new HashMap<>();
         HashMap<Integer, CharSequence> contentText = new HashMap<>();
         HashMap<Integer, Animation.AnimationListener> contentAnimationListener = new HashMap<>();
-        HashMap<Integer, ClickCallback> contentClickListener = new HashMap<>();
+        HashMap<Integer, OnClickListener> contentClickListener = new HashMap<>();
         HashMap<Integer, Typeface> contentTypeFace = new HashMap<>();
         HashMap<Integer, Tag> contentTag = new HashMap<>();
 
@@ -200,8 +228,8 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener {
             return this;
         }
 
-        public Builder addClickToView(@IdRes int id, @NonNull ClickCallback clickCallback) {
-            contentClickListener.put(id, clickCallback);
+        public Builder addClickToView(@IdRes int id, @NonNull OnClickListener OnClickListener) {
+            contentClickListener.put(id, OnClickListener);
             return this;
         }
 

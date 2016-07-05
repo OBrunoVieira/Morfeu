@@ -35,15 +35,15 @@ public class Initialize {
 
     private static void setupStaticListeners(@NonNull Morpheus morpheus) {
         if (morpheus.builder.onCancelListener != null) {
-            morpheus.setOnCancelListener(morpheus.builder.onCancelListener);
+            morpheus.setOnCancelListener(morpheus);
         }
 
         if (morpheus.builder.onDismissListener != null) {
-            morpheus.setOnDismissListener(morpheus.builder.onDismissListener);
+            morpheus.setOnDismissListener(morpheus);
         }
 
         if (morpheus.builder.onShowListener != null) {
-            morpheus.setOnShowListener(morpheus.builder.onShowListener);
+            morpheus.setOnShowListener(morpheus);
         }
     }
 
