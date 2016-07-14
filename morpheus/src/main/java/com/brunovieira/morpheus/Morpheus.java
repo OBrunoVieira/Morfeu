@@ -11,6 +11,7 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
+import android.support.annotation.UiThread;
 import android.support.v7.app.AppCompatDialog;
 import android.view.View;
 import android.view.WindowManager;
@@ -24,12 +25,8 @@ import java.util.HashMap;
  */
 
 public class Morpheus extends AppCompatDialog implements View.OnClickListener, DialogInterface.OnCancelListener, DialogInterface.OnShowListener, DialogInterface.OnDismissListener {
-    public static final int TRANSLUCENT_THEME = R.style.DialogTranslucent;
-    public static final int ANIM_SPRING_IN = R.anim.anim_spring_in;
-    public static final int ANIM_SPRING_OUT = R.anim.anim_spring_out;
     private static WeakReference<Morpheus> morpheus;
     Builder builder;
-
 
     private Morpheus(Builder builder, int theme) {
         super(builder.context, theme);
@@ -47,6 +44,7 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
         Initialize.now(this);
     }
 
+    @UiThread
     @Override
     public void show() {
         try {
@@ -59,7 +57,7 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
     @Override
     public void onClick(View view) {
         if (view != null) {
-            builder.contentClickListener.get(view.getId()).onClickDialog(this, view, builder);
+            builder.contentClickListener.get(view.getId()).onClickDialog(this, view);
         }
     }
 
@@ -77,33 +75,33 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
 
     @Override
     public void onCancel(DialogInterface dialog) {
-        builder.onCancelListener.onCancelDialog(this, builder);
+        builder.onCancelListener.onCancelDialog(this);
     }
 
     @Override
     public void onDismiss(DialogInterface dialog) {
-        builder.onCancelListener.onCancelDialog(this, builder);
+        builder.onCancelListener.onCancelDialog(this);
     }
 
     @Override
     public void onShow(DialogInterface dialog) {
-        builder.onCancelListener.onCancelDialog(this, builder);
+        builder.onCancelListener.onCancelDialog(this);
     }
 
     public interface OnClickListener {
-        void onClickDialog(@NonNull Morpheus dialog, @NonNull View view, Builder builder);
+        void onClickDialog(@NonNull Morpheus dialog, @NonNull View view);
     }
 
     public interface OnCancelListener {
-        void onCancelDialog(@NonNull Morpheus dialog, Builder builder);
+        void onCancelDialog(@NonNull Morpheus dialog);
     }
 
     public interface OnDismissListener {
-        void onDismissDialog(@NonNull Morpheus dialog, Builder builder);
+        void onDismissDialog(@NonNull Morpheus dialog);
     }
 
     public interface OnShowListener {
-        void onShowDialog(@NonNull Morpheus dialog, Builder builder);
+        void onShowDialog(@NonNull Morpheus dialog);
     }
 
     public static class Builder {
@@ -253,11 +251,13 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
             return this;
         }
 
+        @UiThread
         public Morpheus startAnimation() {
             Initialize.startAnimation(morpheus.get());
             return morpheus.get();
         }
 
+        @UiThread
         public Morpheus show() {
             Morpheus morpheus;
             if (themeId != 0) {

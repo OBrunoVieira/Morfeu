@@ -5,7 +5,9 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.brunovieira.morpheus.Anim;
 import com.brunovieira.morpheus.Morpheus;
+import com.brunovieira.morpheus.Theme;
 
 public class HomeActivity extends AppCompatActivity implements Morpheus.OnClickListener {
 
@@ -27,10 +29,15 @@ public class HomeActivity extends AppCompatActivity implements Morpheus.OnClickL
         }
     }
 
+    @Override
+    public void onClickDialog(@NonNull Morpheus dialog, @NonNull View view) {
+
+    }
+
     private void createDialog() {
         new Morpheus.Builder(this)
                 .contentView(R.layout.view_dialog)
-                .theme(Morpheus.TRANSLUCENT_THEME)
+                .theme(Theme.TRANSLUCENT_THEME)
                 .addText(R.id.dialog_title, "Lorem ipsum dolor sit amet.")
                 .addText(R.id.dialog_subtitle, "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...")
                 .addText(R.id.dialog_dimiss, "Lorem")
@@ -38,12 +45,7 @@ public class HomeActivity extends AppCompatActivity implements Morpheus.OnClickL
                 .addTag(R.id.dialog_main_button, new Morpheus.Tag(TAG))
                 .addButton(R.id.dialog_main_button, "Lorem Ipsum")
                 .addViewToAnim(R.id.dialog_content_main, android.R.anim.fade_in)
-                .addViewToAnim(R.id.feedback_dialog_frame_content, Morpheus.ANIM_SPRING_IN)
+                .addViewToAnim(R.id.feedback_dialog_frame_content, Anim.ANIM_SPRING_IN)
                 .show();
-    }
-
-    @Override
-    public void onClickDialog(@NonNull Morpheus dialog, @NonNull View view, Morpheus.Builder builder) {
-
     }
 }
