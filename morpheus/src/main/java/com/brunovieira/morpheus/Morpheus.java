@@ -44,7 +44,7 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
         Initialize.now(this);
     }
 
-    private Builder getBuilder() {
+    public Builder getBuilder() {
         return builder;
     }
 
