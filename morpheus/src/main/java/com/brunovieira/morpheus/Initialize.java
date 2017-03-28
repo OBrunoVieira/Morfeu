@@ -100,14 +100,20 @@ public class Initialize {
 
                 SparseIntArray contentImageButton = morpheus.builder.contentImageButton;
                 if (contentImageButton != null && contentImageButton.size() > 0) {
-                    Drawable drawable = ContextCompat.getDrawable(morpheus.getContext(),
-                            contentImageButton.get(key));
+                    int imageKey = contentImageButton.keyAt(i);
+                    if(imageKey != 0) {
+                        int imageValue = contentImageButton.get(imageKey);
+                        if(imageValue != 0) {
+                            Drawable drawable = ContextCompat.getDrawable(morpheus.getContext(),
+                                    imageValue);
 
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        view.setBackground(drawable);
-                        return;
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                view.setBackground(drawable);
+                                return;
+                            }
+                            view.setBackgroundDrawable(drawable);
+                        }
                     }
-                    view.setBackgroundDrawable(drawable);
                 }
             }
         }
