@@ -13,12 +13,13 @@ import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 import android.support.annotation.UiThread;
 import android.support.v7.app.AppCompatDialog;
+import android.util.SparseArray;
+import android.util.SparseIntArray;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 
 import java.lang.ref.WeakReference;
-import java.util.HashMap;
 
 /**
  * Created by bruno.vieira on 20/05/2016.
@@ -113,14 +114,14 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
         int layoutResID;
         int themeId;
 
-        HashMap<Integer, Integer> contentAnimation = new HashMap<>();
-        HashMap<Integer, Integer> contentImage = new HashMap<>();
-        HashMap<Integer, Integer> contentImageButton = new HashMap<>();
-        HashMap<Integer, CharSequence> contentText = new HashMap<>();
-        HashMap<Integer, Animation.AnimationListener> contentAnimationListener = new HashMap<>();
-        HashMap<Integer, OnClickListener> contentClickListener = new HashMap<>();
-        HashMap<Integer, Typeface> contentTypeFace = new HashMap<>();
-        HashMap<Integer, Tag> contentTag = new HashMap<>();
+        SparseIntArray contentAnimation = new SparseIntArray();
+        SparseIntArray contentImage = new SparseIntArray();
+        SparseIntArray contentImageButton = new SparseIntArray();
+        SparseArray<CharSequence> contentText = new SparseArray<>();
+        SparseArray<Animation.AnimationListener> contentAnimationListener = new SparseArray<>();
+        SparseArray<OnClickListener> contentClickListener = new SparseArray<>();
+        SparseArray<Typeface> contentTypeFace = new SparseArray<>();
+        SparseArray<Tag> contentTag = new SparseArray<>();
 
         OnCancelListener onCancelListener;
         OnDismissListener onDismissListener;
@@ -128,10 +129,12 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
 
         public Builder(@NonNull Context context) {
             this.context = context;
+            initializeSparseArray();
         }
 
         public Builder(@NonNull android.support.v4.app.Fragment fragment) {
             this.context = fragment.getContext();
+            initializeSparseArray();
         }
 
         public Builder addTag(@IdRes int viewId, @NonNull Tag tag) {
@@ -220,13 +223,20 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
         }
 
         public Builder addViewToAnim(@IdRes int id, @AnimRes int anim) {
-            contentAnimation.put(id, anim);
+            if (contentAnimation != null) {
+                contentAnimation.put(id, anim);
+            }
             return this;
         }
 
         public Builder addViewToAnim(@IdRes int id, @AnimRes int anim, @NonNull Animation.AnimationListener animationListener) {
-            contentAnimation.put(id, anim);
-            contentAnimationListener.put(id, animationListener);
+            if (contentAnimation != null) {
+                contentAnimation.put(id, anim);
+            }
+
+            if (contentAnimationListener != null) {
+                contentAnimationListener.put(id, animationListener);
+            }
             return this;
         }
 
@@ -271,6 +281,17 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
             }
             morpheus.show();
             return morpheus;
+        }
+
+        private void initializeSparseArray() {
+            contentAnimation = new SparseIntArray();
+            contentImage = new SparseIntArray();
+            contentImageButton = new SparseIntArray();
+            contentText = new SparseArray<>();
+            contentAnimationListener = new SparseArray<>();
+            contentClickListener = new SparseArray<>();
+            contentTypeFace = new SparseArray<>();
+            contentTag = new SparseArray<>();
         }
     }
 
