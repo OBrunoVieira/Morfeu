@@ -10,11 +10,9 @@ import android.util.SparseIntArray;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.util.Iterator;
-import java.util.Map;
 
 /**
  * Created by bruno.vieira on 21/05/2016.
@@ -24,6 +22,7 @@ public class Initialize {
     static void now(@NonNull Morpheus morpheus) {
         morpheusLayoutSetup(morpheus);
         setupTextView(morpheus);
+        setupBackgroundButton(morpheus);
         setupImageView(morpheus);
         setupAnimView(morpheus);
         setupClickListener(morpheus);
@@ -97,23 +96,29 @@ public class Initialize {
                 if (contentTypeFace != null && contentTypeFace.size() > 0) {
                     textView.setTypeface(contentTypeFace.get(view.getId()));
                 }
+            }
+        }
+    }
 
-                SparseIntArray contentImageButton = morpheus.builder.contentImageButton;
-                if (contentImageButton != null && contentImageButton.size() > 0) {
-                    int imageKey = contentImageButton.keyAt(i);
-                    if(imageKey != 0) {
-                        int imageValue = contentImageButton.get(imageKey);
-                        if(imageValue != 0) {
-                            Drawable drawable = ContextCompat.getDrawable(morpheus.getContext(),
-                                    imageValue);
+    private static void setupBackgroundButton(@NonNull Morpheus morpheus) {
+        SparseIntArray contentImageButton = morpheus.builder.contentImageButton;
+        for (int i = 0; i < contentImageButton.size(); i++) {
+            int key = contentImageButton.keyAt(i);
+            View view = morpheus.findViewById(key);
 
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                                view.setBackground(drawable);
-                                return;
-                            }
-                            view.setBackgroundDrawable(drawable);
-                        }
+            if (view != null && view instanceof Button) {
+                Button button = (Button) view;
+                int imageValue = contentImageButton.get(key);
+
+                if (imageValue != 0) {
+                    Drawable drawable = ContextCompat.getDrawable(morpheus.getContext(),
+                            imageValue);
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        button.setBackground(drawable);
+                        return;
                     }
+                    button.setBackgroundDrawable(drawable);
                 }
             }
         }

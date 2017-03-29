@@ -45,6 +45,11 @@
                     android:paddingRight="@dimen/spacings_eighteen"
                     android:paddingTop="@dimen/spacings_one_hundred_fifty_five">
 
+                    <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/dialog_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
                     <android.support.v7.widget.AppCompatTextView
                         android:id="@+id/dialog_title"
                         android:layout_width="match_parent"
