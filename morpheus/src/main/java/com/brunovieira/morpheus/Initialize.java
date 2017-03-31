@@ -18,7 +18,7 @@ import android.widget.TextView;
  * Created by bruno.vieira on 21/05/2016.
  */
 
-public class Initialize {
+class Initialize {
     static void now(@NonNull Morpheus morpheus) {
         morpheusLayoutSetup(morpheus);
         setupTextView(morpheus);
@@ -84,17 +84,19 @@ public class Initialize {
 
     private static void setupTextView(@NonNull Morpheus morpheus) {
         SparseArray<CharSequence> contentText = morpheus.builder.contentText;
-        for (int i = 0; i < contentText.size(); i++) {
-            int key = contentText.keyAt(i);
-            View view = morpheus.findViewById(key);
+        if (contentText != null && contentText.size() > 0) {
+            for (int i = 0; i < contentText.size(); i++) {
+                int key = contentText.keyAt(i);
+                View view = morpheus.findViewById(key);
 
-            if (view != null && view instanceof TextView) {
-                TextView textView = (TextView) view;
-                textView.setText(contentText.get(key));
+                if (view != null && view instanceof TextView) {
+                    TextView textView = (TextView) view;
+                    textView.setText(contentText.get(key));
 
-                SparseArray<Typeface> contentTypeFace = morpheus.builder.contentTypeFace;
-                if (contentTypeFace != null && contentTypeFace.size() > 0) {
-                    textView.setTypeface(contentTypeFace.get(view.getId()));
+                    SparseArray<Typeface> contentTypeFace = morpheus.builder.contentTypeFace;
+                    if (contentTypeFace != null && contentTypeFace.size() > 0) {
+                        textView.setTypeface(contentTypeFace.get(view.getId()));
+                    }
                 }
             }
         }
@@ -102,23 +104,25 @@ public class Initialize {
 
     private static void setupBackgroundButton(@NonNull Morpheus morpheus) {
         SparseIntArray contentImageButton = morpheus.builder.contentImageButton;
-        for (int i = 0; i < contentImageButton.size(); i++) {
-            int key = contentImageButton.keyAt(i);
-            View view = morpheus.findViewById(key);
+        if (contentImageButton != null && contentImageButton.size() > 0) {
+            for (int i = 0; i < contentImageButton.size(); i++) {
+                int key = contentImageButton.keyAt(i);
+                View view = morpheus.findViewById(key);
 
-            if (view != null && view instanceof Button) {
-                Button button = (Button) view;
-                int imageValue = contentImageButton.get(key);
+                if (view != null && view instanceof Button) {
+                    Button button = (Button) view;
+                    int imageValue = contentImageButton.get(key);
 
-                if (imageValue != 0) {
-                    Drawable drawable = ContextCompat.getDrawable(morpheus.getContext(),
-                            imageValue);
+                    if (imageValue != 0) {
+                        Drawable drawable = ContextCompat.getDrawable(morpheus.getContext(),
+                                imageValue);
 
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        button.setBackground(drawable);
-                        return;
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                            button.setBackground(drawable);
+                            return;
+                        }
+                        button.setBackgroundDrawable(drawable);
                     }
-                    button.setBackgroundDrawable(drawable);
                 }
             }
         }
@@ -126,30 +130,34 @@ public class Initialize {
 
     private static void setupImageView(@NonNull Morpheus morpheus) {
         SparseIntArray contentImage = morpheus.builder.contentImage;
-        for (int i = 0; i < contentImage.size(); i++) {
-            int key = contentImage.keyAt(i);
-            View view = morpheus.findViewById(key);
+        if (contentImage != null && contentImage.size() > 0) {
+            for (int i = 0; i < contentImage.size(); i++) {
+                int key = contentImage.keyAt(i);
+                View view = morpheus.findViewById(key);
 
-            if (view != null && view instanceof ImageView) {
-                ImageView imageView = (ImageView) view;
-                imageView.setImageResource(contentImage.get(key));
+                if (view != null && view instanceof ImageView) {
+                    ImageView imageView = (ImageView) view;
+                    imageView.setImageResource(contentImage.get(key));
+                }
             }
         }
     }
 
     private static void setupAnimView(@NonNull Morpheus morpheus) {
         SparseIntArray contentAnimation = morpheus.builder.contentAnimation;
-        for (int i = 0; i < contentAnimation.size(); i++) {
-            int key = contentAnimation.keyAt(i);
-            View view = morpheus.findViewById(key);
-            if (view != null) {
-                Animation animation = AnimationUtils.loadAnimation(morpheus.builder.context, contentAnimation.get(key));
-                view.startAnimation(animation);
+        if (contentAnimation != null && contentAnimation.size() > 0) {
+            for (int i = 0; i < contentAnimation.size(); i++) {
+                int key = contentAnimation.keyAt(i);
+                View view = morpheus.findViewById(key);
+                if (view != null) {
+                    Animation animation = AnimationUtils.loadAnimation(morpheus.builder.context, contentAnimation.get(key));
+                    view.startAnimation(animation);
 
-                SparseArray<Animation.AnimationListener> contentAnimationListener = morpheus.builder.contentAnimationListener;
-                if (contentAnimationListener != null && contentAnimationListener.size() > 0) {
-                    Animation.AnimationListener animationListener = contentAnimationListener.get(view.getId());
-                    animation.setAnimationListener(animationListener);
+                    SparseArray<Animation.AnimationListener> contentAnimationListener = morpheus.builder.contentAnimationListener;
+                    if (contentAnimationListener != null && contentAnimationListener.size() > 0) {
+                        Animation.AnimationListener animationListener = contentAnimationListener.get(view.getId());
+                        animation.setAnimationListener(animationListener);
+                    }
                 }
             }
         }

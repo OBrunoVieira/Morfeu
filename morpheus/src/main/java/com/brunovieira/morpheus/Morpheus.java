@@ -75,6 +75,12 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
         builder.contentAnimationListener = null;
         builder.contentClickListener = null;
         builder.contentTypeFace = null;
+        builder.contentTag = null;
+
+        builder.onCancelListener = null;
+        builder.onDismissListener = null;
+        builder.onShowListener = null;
+
         super.dismiss();
     }
 
