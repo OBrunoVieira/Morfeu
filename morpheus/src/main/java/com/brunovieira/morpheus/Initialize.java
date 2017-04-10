@@ -1,6 +1,8 @@
 package com.brunovieira.morpheus;
 
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -138,6 +140,20 @@ class Initialize {
                 if (view != null && view instanceof ImageView) {
                     ImageView imageView = (ImageView) view;
                     imageView.setImageResource(contentImage.get(key));
+                }
+            }
+        }
+
+        SparseArray<Bitmap> contentBitmap = morpheus.builder.contentBitmap;
+        if (contentBitmap != null && contentBitmap.size() > 0) {
+            for (int i = 0; i < contentBitmap.size(); i++) {
+                int key = contentBitmap.keyAt(i);
+                View view = morpheus.findViewById(key);
+                Bitmap bitmap = contentBitmap.valueAt(i);
+
+                if (view != null && view instanceof ImageView && bitmap != null) {
+                    ImageView imageView = (ImageView) view;
+                    imageView.setImageBitmap(bitmap);
                 }
             }
         }

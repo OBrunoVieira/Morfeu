@@ -2,7 +2,10 @@ package com.brunovieira.morpheus;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.AnimRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
@@ -18,6 +21,7 @@ import android.util.SparseIntArray;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
+import android.widget.ImageView;
 
 import java.lang.ref.WeakReference;
 
@@ -128,6 +132,7 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
         SparseArray<OnClickListener> contentClickListener = new SparseArray<>();
         SparseArray<Typeface> contentTypeFace = new SparseArray<>();
         SparseArray<Tag> contentTag = new SparseArray<>();
+        SparseArray<Bitmap> contentBitmap = new SparseArray<>();
 
         OnCancelListener onCancelListener;
         OnDismissListener onDismissListener;
@@ -253,6 +258,11 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
 
         public Builder addImage(int id, @DrawableRes int drawable) {
             contentImage.put(id, drawable);
+            return this;
+        }
+
+        public Builder addImage(int id, @NonNull Bitmap bitmap) {
+            contentBitmap.put(id, bitmap);
             return this;
         }
 
