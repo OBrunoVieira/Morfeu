@@ -65,7 +65,7 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
 
     @Override
     public void onClick(View view) {
-        if (view != null) {
+        if (view != null && builder.contentClickListener != null) {
             builder.contentClickListener.get(view.getId()).onClickDialog(this, view);
         }
     }
@@ -149,12 +149,16 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
         }
 
         public Builder addTag(@IdRes int viewId, @NonNull Tag tag) {
-            this.contentTag.put(viewId, tag);
+            if (contentTag != null) {
+                this.contentTag.put(viewId, tag);
+            }
             return this;
         }
 
         public Builder addFontType(@IdRes int viewId, @NonNull Typeface typeface) {
-            contentTypeFace.put(viewId, typeface);
+            if (contentTypeFace != null) {
+                contentTypeFace.put(viewId, typeface);
+            }
             return this;
         }
 
@@ -164,8 +168,13 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
         }
 
         public Builder addButton(@IdRes int viewId, @NonNull CharSequence charSequence, @NonNull Typeface typeface) {
-            contentText.put(viewId, charSequence);
-            contentTypeFace.put(viewId, typeface);
+            if (contentText != null) {
+                contentText.put(viewId, charSequence);
+            }
+
+            if (contentTypeFace != null) {
+                contentTypeFace.put(viewId, typeface);
+            }
             return this;
         }
 
@@ -175,7 +184,9 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
         }
 
         public Builder addButton(@IdRes int viewId, @NonNull CharSequence charSequence) {
-            contentText.put(viewId, charSequence);
+            if (contentText != null) {
+                contentText.put(viewId, charSequence);
+            }
             return this;
         }
 
@@ -185,8 +196,13 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
         }
 
         public Builder addButton(@IdRes int viewId, @DrawableRes int drawable, @NonNull CharSequence charSequence) {
-            contentText.put(viewId, charSequence);
-            contentImageButton.put(viewId, drawable);
+            if (contentText != null) {
+                contentText.put(viewId, charSequence);
+            }
+
+            if (contentImageButton != null) {
+                contentImageButton.put(viewId, drawable);
+            }
             return this;
         }
 
@@ -196,9 +212,17 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
         }
 
         public Builder addButton(@IdRes int viewId, @DrawableRes int drawable, @NonNull CharSequence charSequence, @NonNull Typeface typeface) {
-            contentText.put(viewId, charSequence);
-            contentTypeFace.put(viewId, typeface);
-            contentImageButton.put(viewId, drawable);
+            if (contentText != null) {
+                contentText.put(viewId, charSequence);
+            }
+
+            if (contentTypeFace != null) {
+                contentTypeFace.put(viewId, typeface);
+            }
+
+            if (contentImageButton != null) {
+                contentImageButton.put(viewId, drawable);
+            }
             return this;
         }
 
@@ -208,8 +232,13 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
         }
 
         public Builder addText(@IdRes int viewId, @NonNull CharSequence charSequence, @NonNull Typeface typeface) {
-            contentText.put(viewId, charSequence);
-            contentTypeFace.put(viewId, typeface);
+            if (contentText != null) {
+                contentText.put(viewId, charSequence);
+            }
+
+            if (contentTypeFace != null) {
+                contentTypeFace.put(viewId, typeface);
+            }
             return this;
         }
 
@@ -219,7 +248,9 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
         }
 
         public Builder addText(@IdRes int viewId, @NonNull CharSequence charSequence) {
-            contentText.put(viewId, charSequence);
+            if (contentText != null) {
+                contentText.put(viewId, charSequence);
+            }
             return this;
         }
 
@@ -252,17 +283,23 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
         }
 
         public Builder addClickToView(@IdRes int id, @NonNull OnClickListener OnClickListener) {
-            contentClickListener.put(id, OnClickListener);
+            if (contentClickListener != null) {
+                contentClickListener.put(id, OnClickListener);
+            }
             return this;
         }
 
         public Builder addImage(int id, @DrawableRes int drawable) {
-            contentImage.put(id, drawable);
+            if (contentImage != null) {
+                contentImage.put(id, drawable);
+            }
             return this;
         }
 
         public Builder addImage(int id, @NonNull Bitmap bitmap) {
-            contentBitmap.put(id, bitmap);
+            if (contentBitmap != null) {
+                contentBitmap.put(id, bitmap);
+            }
             return this;
         }
 
