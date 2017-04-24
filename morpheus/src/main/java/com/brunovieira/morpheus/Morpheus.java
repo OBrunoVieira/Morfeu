@@ -2,7 +2,10 @@ package com.brunovieira.morpheus;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.AnimRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
@@ -13,12 +16,14 @@ import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 import android.support.annotation.UiThread;
 import android.support.v7.app.AppCompatDialog;
+import android.util.SparseArray;
+import android.util.SparseIntArray;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
+import android.widget.ImageView;
 
 import java.lang.ref.WeakReference;
-import java.util.HashMap;
 
 /**
  * Created by bruno.vieira on 20/05/2016.
@@ -60,7 +65,7 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
 
     @Override
     public void onClick(View view) {
-        if (view != null) {
+        if (view != null && builder.contentClickListener != null) {
             builder.contentClickListener.get(view.getId()).onClickDialog(this, view);
         }
     }
@@ -74,6 +79,12 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
         builder.contentAnimationListener = null;
         builder.contentClickListener = null;
         builder.contentTypeFace = null;
+        builder.contentTag = null;
+
+        builder.onCancelListener = null;
+        builder.onDismissListener = null;
+        builder.onShowListener = null;
+
         super.dismiss();
     }
 
@@ -113,14 +124,15 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
         int layoutResID;
         int themeId;
 
-        HashMap<Integer, Integer> contentAnimation = new HashMap<>();
-        HashMap<Integer, Integer> contentImage = new HashMap<>();
-        HashMap<Integer, Integer> contentImageButton = new HashMap<>();
-        HashMap<Integer, CharSequence> contentText = new HashMap<>();
-        HashMap<Integer, Animation.AnimationListener> contentAnimationListener = new HashMap<>();
-        HashMap<Integer, OnClickListener> contentClickListener = new HashMap<>();
-        HashMap<Integer, Typeface> contentTypeFace = new HashMap<>();
-        HashMap<Integer, Tag> contentTag = new HashMap<>();
+        SparseIntArray contentAnimation = new SparseIntArray();
+        SparseIntArray contentImage = new SparseIntArray();
+        SparseIntArray contentImageButton = new SparseIntArray();
+        SparseArray<CharSequence> contentText = new SparseArray<>();
+        SparseArray<Animation.AnimationListener> contentAnimationListener = new SparseArray<>();
+        SparseArray<OnClickListener> contentClickListener = new SparseArray<>();
+        SparseArray<Typeface> contentTypeFace = new SparseArray<>();
+        SparseArray<Tag> contentTag = new SparseArray<>();
+        SparseArray<Bitmap> contentBitmap = new SparseArray<>();
 
         OnCancelListener onCancelListener;
         OnDismissListener onDismissListener;
@@ -128,19 +140,25 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
 
         public Builder(@NonNull Context context) {
             this.context = context;
+            initializeSparseArray();
         }
 
         public Builder(@NonNull android.support.v4.app.Fragment fragment) {
             this.context = fragment.getContext();
+            initializeSparseArray();
         }
 
         public Builder addTag(@IdRes int viewId, @NonNull Tag tag) {
-            this.contentTag.put(viewId, tag);
+            if (contentTag != null) {
+                this.contentTag.put(viewId, tag);
+            }
             return this;
         }
 
         public Builder addFontType(@IdRes int viewId, @NonNull Typeface typeface) {
-            contentTypeFace.put(viewId, typeface);
+            if (contentTypeFace != null) {
+                contentTypeFace.put(viewId, typeface);
+            }
             return this;
         }
 
@@ -150,8 +168,13 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
         }
 
         public Builder addButton(@IdRes int viewId, @NonNull CharSequence charSequence, @NonNull Typeface typeface) {
-            contentText.put(viewId, charSequence);
-            contentTypeFace.put(viewId, typeface);
+            if (contentText != null) {
+                contentText.put(viewId, charSequence);
+            }
+
+            if (contentTypeFace != null) {
+                contentTypeFace.put(viewId, typeface);
+            }
             return this;
         }
 
@@ -161,7 +184,9 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
         }
 
         public Builder addButton(@IdRes int viewId, @NonNull CharSequence charSequence) {
-            contentText.put(viewId, charSequence);
+            if (contentText != null) {
+                contentText.put(viewId, charSequence);
+            }
             return this;
         }
 
@@ -171,8 +196,13 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
         }
 
         public Builder addButton(@IdRes int viewId, @DrawableRes int drawable, @NonNull CharSequence charSequence) {
-            contentText.put(viewId, charSequence);
-            contentImageButton.put(viewId, drawable);
+            if (contentText != null) {
+                contentText.put(viewId, charSequence);
+            }
+
+            if (contentImageButton != null) {
+                contentImageButton.put(viewId, drawable);
+            }
             return this;
         }
 
@@ -182,9 +212,17 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
         }
 
         public Builder addButton(@IdRes int viewId, @DrawableRes int drawable, @NonNull CharSequence charSequence, @NonNull Typeface typeface) {
-            contentText.put(viewId, charSequence);
-            contentTypeFace.put(viewId, typeface);
-            contentImageButton.put(viewId, drawable);
+            if (contentText != null) {
+                contentText.put(viewId, charSequence);
+            }
+
+            if (contentTypeFace != null) {
+                contentTypeFace.put(viewId, typeface);
+            }
+
+            if (contentImageButton != null) {
+                contentImageButton.put(viewId, drawable);
+            }
             return this;
         }
 
@@ -194,8 +232,13 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
         }
 
         public Builder addText(@IdRes int viewId, @NonNull CharSequence charSequence, @NonNull Typeface typeface) {
-            contentText.put(viewId, charSequence);
-            contentTypeFace.put(viewId, typeface);
+            if (contentText != null) {
+                contentText.put(viewId, charSequence);
+            }
+
+            if (contentTypeFace != null) {
+                contentTypeFace.put(viewId, typeface);
+            }
             return this;
         }
 
@@ -205,7 +248,9 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
         }
 
         public Builder addText(@IdRes int viewId, @NonNull CharSequence charSequence) {
-            contentText.put(viewId, charSequence);
+            if (contentText != null) {
+                contentText.put(viewId, charSequence);
+            }
             return this;
         }
 
@@ -220,23 +265,41 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
         }
 
         public Builder addViewToAnim(@IdRes int id, @AnimRes int anim) {
-            contentAnimation.put(id, anim);
+            if (contentAnimation != null) {
+                contentAnimation.put(id, anim);
+            }
             return this;
         }
 
         public Builder addViewToAnim(@IdRes int id, @AnimRes int anim, @NonNull Animation.AnimationListener animationListener) {
-            contentAnimation.put(id, anim);
-            contentAnimationListener.put(id, animationListener);
+            if (contentAnimation != null) {
+                contentAnimation.put(id, anim);
+            }
+
+            if (contentAnimationListener != null) {
+                contentAnimationListener.put(id, animationListener);
+            }
             return this;
         }
 
         public Builder addClickToView(@IdRes int id, @NonNull OnClickListener OnClickListener) {
-            contentClickListener.put(id, OnClickListener);
+            if (contentClickListener != null) {
+                contentClickListener.put(id, OnClickListener);
+            }
             return this;
         }
 
         public Builder addImage(int id, @DrawableRes int drawable) {
-            contentImage.put(id, drawable);
+            if (contentImage != null) {
+                contentImage.put(id, drawable);
+            }
+            return this;
+        }
+
+        public Builder addImage(int id, @NonNull Bitmap bitmap) {
+            if (contentBitmap != null) {
+                contentBitmap.put(id, bitmap);
+            }
             return this;
         }
 
@@ -271,6 +334,17 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
             }
             morpheus.show();
             return morpheus;
+        }
+
+        private void initializeSparseArray() {
+            contentAnimation = new SparseIntArray();
+            contentImage = new SparseIntArray();
+            contentImageButton = new SparseIntArray();
+            contentText = new SparseArray<>();
+            contentAnimationListener = new SparseArray<>();
+            contentClickListener = new SparseArray<>();
+            contentTypeFace = new SparseArray<>();
+            contentTag = new SparseArray<>();
         }
     }
 

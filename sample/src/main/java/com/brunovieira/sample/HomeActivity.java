@@ -43,7 +43,7 @@ public class HomeActivity extends AppCompatActivity implements Morpheus.OnClickL
                 .addText(R.id.dialog_dimiss, "Lorem")
                 .addClickToView(R.id.dialog_main_button, this)
                 .addTag(R.id.dialog_main_button, new Morpheus.Tag(TAG))
-                .addButton(R.id.dialog_main_button, "Lorem Ipsum")
+                .addButton(R.id.dialog_main_button, android.R.drawable.alert_dark_frame,"Lorem Ipsum")
                 .addViewToAnim(R.id.dialog_content_main, android.R.anim.fade_in)
                 .addViewToAnim(R.id.feedback_dialog_frame_content, Anim.ANIM_SPRING_IN)
                 .show();
