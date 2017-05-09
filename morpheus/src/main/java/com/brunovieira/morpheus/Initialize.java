@@ -198,7 +198,9 @@ class Initialize {
         }
     }
 
-    static void startAnimation(@NonNull Morpheus morpheus) {
-        setupAnimView(morpheus);
+    static void startAnimation(Morpheus morpheus) {
+        if (morpheus != null) {
+            setupAnimView(morpheus);
+        }
     }
 }
