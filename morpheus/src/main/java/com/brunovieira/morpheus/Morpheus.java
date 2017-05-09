@@ -71,31 +71,15 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
     }
 
     @Override
-    public void dismiss() {
-        builder.contentAnimation = null;
-        builder.contentImage = null;
-        builder.contentImageButton = null;
-        builder.contentText = null;
-        builder.contentAnimationListener = null;
-        builder.contentClickListener = null;
-        builder.contentTypeFace = null;
-        builder.contentTag = null;
-
-        builder.onCancelListener = null;
-        builder.onDismissListener = null;
-        builder.onShowListener = null;
-
-        super.dismiss();
-    }
-
-    @Override
     public void onCancel(DialogInterface dialog) {
         builder.onCancelListener.onCancelDialog(this);
+        clear();
     }
 
     @Override
     public void onDismiss(DialogInterface dialog) {
-        builder.onCancelListener.onCancelDialog(this);
+        builder.onDismissListener.onDismissDialog(this);
+        clear();
     }
 
     @Override
@@ -346,6 +330,21 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
             contentTypeFace = new SparseArray<>();
             contentTag = new SparseArray<>();
         }
+    }
+
+    private void clear() {
+        builder.contentAnimation = null;
+        builder.contentImage = null;
+        builder.contentImageButton = null;
+        builder.contentText = null;
+        builder.contentAnimationListener = null;
+        builder.contentClickListener = null;
+        builder.contentTypeFace = null;
+        builder.contentTag = null;
+
+        builder.onCancelListener = null;
+        builder.onDismissListener = null;
+        builder.onShowListener = null;
     }
 
     public static class Tag {
