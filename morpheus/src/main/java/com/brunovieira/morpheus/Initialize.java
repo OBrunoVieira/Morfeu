@@ -2,10 +2,10 @@ package com.brunovieira.morpheus;
 
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.RestrictTo;
 import android.support.v4.content.ContextCompat;
 import android.util.SparseArray;
 import android.util.SparseIntArray;
@@ -16,11 +16,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-/**
- * Created by bruno.vieira on 21/05/2016.
- */
-
+@RestrictTo(RestrictTo.Scope.LIBRARY)
 class Initialize {
+
+    @RestrictTo(RestrictTo.Scope.LIBRARY)
     static void now(@NonNull Morpheus morpheus) {
         morpheusLayoutSetup(morpheus);
         setupTextView(morpheus);
@@ -30,6 +29,13 @@ class Initialize {
         setupClickListener(morpheus);
         setupViewTags(morpheus);
         setupStaticListeners(morpheus);
+    }
+
+    @RestrictTo(RestrictTo.Scope.LIBRARY)
+    static void startAnimation(Morpheus morpheus) {
+        if (morpheus != null) {
+            setupAnimView(morpheus);
+        }
     }
 
     private static void morpheusLayoutSetup(@NonNull Morpheus morpheus) {
@@ -198,9 +204,6 @@ class Initialize {
         }
     }
 
-    static void startAnimation(Morpheus morpheus) {
-        if (morpheus != null) {
-            setupAnimView(morpheus);
-        }
+    private Initialize() {
     }
 }

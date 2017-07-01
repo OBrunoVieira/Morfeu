@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/dialog_content_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/cardview_dark_background"
     android:gravity="center"
     android:orientation="vertical">
 
@@ -30,11 +28,7 @@
                 android:layout_marginRight="@dimen/spacings_twelve"
                 android:layout_marginTop="@dimen/spacings_twenty"
                 android:background="@android:color/white"
-                android:clickable="true"
-                app:cardBackgroundColor="@android:color/white"
-                app:cardCornerRadius="@dimen/spacings_six"
-                app:cardPreventCornerOverlap="false"
-                app:cardUseCompatPadding="true">
+                android:clickable="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -72,7 +66,7 @@
                         android:textSize="@dimen/text_size_fifteen"
                         tools:text="ONE TWO THREE FOUR FIVE SIX SEVEN EIGHT NINE TEN" />
 
-                    <android.support.v7.widget.AppCompatButton
+                    <Button
                         android:id="@+id/dialog_main_button"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
