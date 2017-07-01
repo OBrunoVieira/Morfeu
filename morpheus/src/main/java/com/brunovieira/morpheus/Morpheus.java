@@ -4,14 +4,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.AnimRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
 import android.support.annotation.IntegerRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.RestrictTo;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 import android.support.annotation.UiThread;
@@ -21,23 +20,23 @@ import android.util.SparseIntArray;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
-import android.widget.ImageView;
 
 import java.lang.ref.WeakReference;
 
-/**
- * Created by bruno.vieira on 20/05/2016.
- */
-
 public class Morpheus extends AppCompatDialog implements View.OnClickListener, DialogInterface.OnCancelListener, DialogInterface.OnShowListener, DialogInterface.OnDismissListener {
-    private static WeakReference<Morpheus> morpheus;
+
+    // TODO: remove static state initialized in constructor
+    private static WeakReference<Morpheus> instance;
+
+    @RestrictTo(RestrictTo.Scope.LIBRARY)
     Builder builder;
 
     private Morpheus(Builder builder, int theme) {
         super(builder.context, theme);
         this.builder = builder;
 
-        morpheus = new WeakReference<>(this);
+        // TODO: make it a singleton in roder to avoid mixing state of static and instance variables
+        instance = new WeakReference<>(this);
         Initialize.now(this);
     }
 
@@ -45,7 +44,8 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
         super(builder.context);
         this.builder = builder;
 
-        morpheus = new WeakReference<>(this);
+        // TODO: make it a singleton in roder to avoid mixing state of static and instance variables
+        instance = new WeakReference<>(this);
         Initialize.now(this);
     }
 
@@ -59,6 +59,7 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
         try {
             super.show();
         } catch (WindowManager.BadTokenException e) {
+            // TODO: better handle this exception. We are overriding its message here...
             throw new WindowManager.BadTokenException("Bad window token, you cannot show a dialog before an Activity is created or after it's hidden.");
         }
     }
@@ -108,6 +109,8 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
         int layoutResID;
         int themeId;
 
+        // TODO: there is plenty of double inititalization here
+        // There is a call to initialize sparse array in the constructor so this is not needed
         SparseIntArray contentAnimation = new SparseIntArray();
         SparseIntArray contentImage = new SparseIntArray();
         SparseIntArray contentImageButton = new SparseIntArray();
@@ -304,8 +307,8 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
 
         @UiThread
         public Morpheus startAnimation() {
-            Initialize.startAnimation(morpheus.get());
-            return morpheus.get();
+            Initialize.startAnimation(instance.get());
+            return instance.get();
         }
 
         @UiThread
@@ -348,9 +351,11 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
     }
 
     public static class Tag {
+
         @IntegerRes
         private int key;
 
+        // TODO: lint warning here. Class and field with same name
         private Object tag;
 
         public Tag(int key, Object tag) {
@@ -365,6 +370,8 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
         public Tag() {
         }
 
+        // Will return 0 if not initialized. Common practice says we should use -1
+        // for non-initialized primitives
         public int getKey() {
             return key;
         }
