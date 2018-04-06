@@ -4,12 +4,12 @@ def globalDefinition = rootProject.extensions.getByName("ext")
 
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 23
+        targetSdkVersion 27
         versionCode globalDefinition.getAt("androidVersionCode")
         versionName globalDefinition.getAt("androidVersionName")
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -27,14 +27,14 @@ android {
     }
 }
 
-def supportVersion = '23.4.0';
+def supportVersion = '27.1.0'
 
 dependencies {
-    compile "com.android.support:support-v4:${supportVersion}"
-    compile "com.android.support:appcompat-v7:${supportVersion}"
-    compile "com.android.support:support-annotations:${supportVersion}"
-    testCompile 'junit:junit:4.12'
+    implementation "com.android.support:support-v4:${supportVersion}"
+    implementation "com.android.support:appcompat-v7:${supportVersion}"
+    implementation "com.android.support:support-annotations:${supportVersion}"
 }
 
-apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+apply from: 'https://raw.githubusercontent.com/numetriclabz/jcenter/master/installv.gradle'
 apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
+
