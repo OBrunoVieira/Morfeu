@@ -26,6 +26,7 @@ class Initialize {
         setupTextView(morpheus);
         setupBackgroundButton(morpheus);
         setupImageView(morpheus);
+        setupVisibility(morpheus);
         setupAnimView(morpheus);
         setupClickListener(morpheus);
         setupViewTags(morpheus);
@@ -53,14 +54,14 @@ class Initialize {
     }
 
     private static void setupViewTags(@NonNull Morpheus morpheus) {
-        Morpheus.Builder builder = morpheus.builder;
+        final Morpheus.Builder builder = morpheus.builder;
         if (builder != null) {
-            SparseArray<Morpheus.Tag> contentTag = builder.contentTag;
+            final SparseArray<Morpheus.Tag> contentTag = builder.contentTag;
             if (contentTag != null && contentTag.size() > 0) {
                 for (int i = 0; i < contentTag.size(); i++) {
                     int key = contentTag.keyAt(i);
-                    Morpheus.Tag tag = contentTag.get(key);
-                    View view = morpheus.findViewById(key);
+                    final Morpheus.Tag tag = contentTag.get(key);
+                    final View view = morpheus.findViewById(key);
 
                     if (view != null) {
                         if (tag.getKey() != 0 && tag.getTag() != null) {
@@ -75,13 +76,13 @@ class Initialize {
     }
 
     private static void setupClickListener(final @NonNull Morpheus morpheus) {
-        Morpheus.Builder builder = morpheus.builder;
+        final Morpheus.Builder builder = morpheus.builder;
         if (builder != null) {
-            SparseArray<Morpheus.OnClickListener> contentClickListener = builder.contentClickListener;
+            final SparseArray<Morpheus.OnClickListener> contentClickListener = builder.contentClickListener;
             if (contentClickListener != null && contentClickListener.size() > 0) {
                 for (int i = 0; i < contentClickListener.size(); i++) {
-                    int key = contentClickListener.keyAt(i);
-                    View view = morpheus.findViewById(key);
+                    final int key = contentClickListener.keyAt(i);
+                    final View view = morpheus.findViewById(key);
                     if (view != null) {
                         view.setOnClickListener(morpheus);
                     }
@@ -91,19 +92,19 @@ class Initialize {
     }
 
     private static void setupTextView(@NonNull Morpheus morpheus) {
-        Morpheus.Builder builder = morpheus.builder;
+        final Morpheus.Builder builder = morpheus.builder;
         if (builder != null) {
-            SparseArray<CharSequence> contentText = builder.contentText;
+            final SparseArray<CharSequence> contentText = builder.contentText;
             if (contentText != null && contentText.size() > 0) {
                 for (int i = 0; i < contentText.size(); i++) {
-                    int key = contentText.keyAt(i);
-                    View view = morpheus.findViewById(key);
+                    final int key = contentText.keyAt(i);
+                    final View view = morpheus.findViewById(key);
 
                     if (view != null && view instanceof TextView) {
-                        TextView textView = (TextView) view;
+                        final TextView textView = (TextView) view;
                         textView.setText(contentText.get(key));
 
-                        SparseArray<Typeface> contentTypeFace = builder.contentTypeFace;
+                        final SparseArray<Typeface> contentTypeFace = builder.contentTypeFace;
                         if (contentTypeFace != null && contentTypeFace.size() > 0) {
                             textView.setTypeface(contentTypeFace.get(view.getId()));
                         }
@@ -113,21 +114,39 @@ class Initialize {
         }
     }
 
-    private static void setupBackgroundButton(@NonNull Morpheus morpheus) {
-        Morpheus.Builder builder = morpheus.builder;
+    private static void setupVisibility(@NonNull Morpheus morpheus) {
+        final Morpheus.Builder builder = morpheus.builder;
         if (builder != null) {
-            SparseIntArray contentImageButton = builder.contentImageButton;
+            final SparseIntArray contentVisibility = builder.contentVisibility;
+            if (contentVisibility != null && contentVisibility.size() > 0) {
+                for (int i = 0; i < contentVisibility.size(); i++) {
+                    final int key = contentVisibility.keyAt(i);
+                    final View view = morpheus.findViewById(key);
+
+                    if (view != null) {
+                        final int visibilityValue = contentVisibility.get(key);
+                        view.setVisibility(visibilityValue);
+                    }
+                }
+            }
+        }
+    }
+
+    private static void setupBackgroundButton(@NonNull Morpheus morpheus) {
+        final Morpheus.Builder builder = morpheus.builder;
+        if (builder != null) {
+            final SparseIntArray contentImageButton = builder.contentImageButton;
             if (contentImageButton != null && contentImageButton.size() > 0) {
                 for (int i = 0; i < contentImageButton.size(); i++) {
-                    int key = contentImageButton.keyAt(i);
-                    View view = morpheus.findViewById(key);
+                    final int key = contentImageButton.keyAt(i);
+                    final View view = morpheus.findViewById(key);
 
                     if (view != null && view instanceof Button) {
-                        Button button = (Button) view;
-                        int imageValue = contentImageButton.get(key);
+                        final Button button = (Button) view;
+                        final int imageValue = contentImageButton.get(key);
 
                         if (imageValue != 0) {
-                            Drawable drawable = ContextCompat.getDrawable(morpheus.getContext(),
+                            final Drawable drawable = ContextCompat.getDrawable(morpheus.getContext(),
                                     imageValue);
 
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -143,30 +162,30 @@ class Initialize {
     }
 
     private static void setupImageView(@NonNull Morpheus morpheus) {
-        Morpheus.Builder builder = morpheus.builder;
+        final Morpheus.Builder builder = morpheus.builder;
         if (builder != null) {
-            SparseIntArray contentImage = builder.contentImage;
+            final SparseIntArray contentImage = builder.contentImage;
             if (contentImage != null && contentImage.size() > 0) {
                 for (int i = 0; i < contentImage.size(); i++) {
-                    int key = contentImage.keyAt(i);
-                    View view = morpheus.findViewById(key);
+                    final int key = contentImage.keyAt(i);
+                    final View view = morpheus.findViewById(key);
 
                     if (view != null && view instanceof ImageView) {
-                        ImageView imageView = (ImageView) view;
+                        final ImageView imageView = (ImageView) view;
                         imageView.setImageResource(contentImage.get(key));
                     }
                 }
             }
 
-            SparseArray<Bitmap> contentBitmap = builder.contentBitmap;
+            final SparseArray<Bitmap> contentBitmap = builder.contentBitmap;
             if (contentBitmap != null && contentBitmap.size() > 0) {
                 for (int i = 0; i < contentBitmap.size(); i++) {
-                    int key = contentBitmap.keyAt(i);
-                    View view = morpheus.findViewById(key);
-                    Bitmap bitmap = contentBitmap.valueAt(i);
+                    final int key = contentBitmap.keyAt(i);
+                    final View view = morpheus.findViewById(key);
+                    final Bitmap bitmap = contentBitmap.valueAt(i);
 
                     if (view != null && view instanceof ImageView && bitmap != null) {
-                        ImageView imageView = (ImageView) view;
+                        final ImageView imageView = (ImageView) view;
                         imageView.setImageBitmap(bitmap);
                     }
                 }
@@ -176,20 +195,20 @@ class Initialize {
     }
 
     private static void setupAnimView(@NonNull Morpheus morpheus) {
-        Morpheus.Builder builder = morpheus.builder;
+        final Morpheus.Builder builder = morpheus.builder;
         if (builder != null) {
-            SparseIntArray contentAnimation = builder.contentAnimation;
+            final SparseIntArray contentAnimation = builder.contentAnimation;
             if (contentAnimation != null && contentAnimation.size() > 0) {
                 for (int i = 0; i < contentAnimation.size(); i++) {
-                    int key = contentAnimation.keyAt(i);
-                    View view = morpheus.findViewById(key);
+                    final int key = contentAnimation.keyAt(i);
+                    final View view = morpheus.findViewById(key);
                     if (view != null) {
-                        Animation animation = AnimationUtils.loadAnimation(builder.context, contentAnimation.get(key));
+                        final Animation animation = AnimationUtils.loadAnimation(builder.context, contentAnimation.get(key));
                         view.startAnimation(animation);
 
-                        SparseArray<Animation.AnimationListener> contentAnimationListener = builder.contentAnimationListener;
+                        final SparseArray<Animation.AnimationListener> contentAnimationListener = builder.contentAnimationListener;
                         if (contentAnimationListener != null && contentAnimationListener.size() > 0) {
-                            Animation.AnimationListener animationListener = contentAnimationListener.get(view.getId());
+                            final Animation.AnimationListener animationListener = contentAnimationListener.get(view.getId());
                             animation.setAnimationListener(animationListener);
                         }
                     }
