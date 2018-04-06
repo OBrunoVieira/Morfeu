@@ -4,11 +4,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.AnimRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
+import android.support.annotation.IntDef;
 import android.support.annotation.IntegerRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -21,7 +20,6 @@ import android.util.SparseIntArray;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
-import android.widget.ImageView;
 
 import java.lang.ref.WeakReference;
 
@@ -109,6 +107,7 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
         int themeId;
 
         SparseIntArray contentAnimation = new SparseIntArray();
+        SparseIntArray contentVisibility = new SparseIntArray();
         SparseIntArray contentImage = new SparseIntArray();
         SparseIntArray contentImageButton = new SparseIntArray();
         SparseArray<CharSequence> contentText = new SparseArray<>();
@@ -266,6 +265,13 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
             return this;
         }
 
+        public Builder addVisibilityToView(@IdRes int id, @Visibility int visibility) {
+            if (contentVisibility != null) {
+                contentVisibility.put(id, visibility);
+            }
+            return this;
+        }
+
         public Builder addClickToView(@IdRes int id, @NonNull OnClickListener OnClickListener) {
             if (contentClickListener != null) {
                 contentClickListener.put(id, OnClickListener);
@@ -372,5 +378,10 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
         public Object getTag() {
             return tag;
         }
+    }
+
+    @IntDef({View.VISIBLE, View.INVISIBLE, View.GONE})
+    public @interface Visibility {
+
     }
 }

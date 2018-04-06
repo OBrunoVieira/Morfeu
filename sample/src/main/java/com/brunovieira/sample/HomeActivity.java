@@ -47,6 +47,7 @@ public class HomeActivity extends AppCompatActivity implements Morpheus.OnClickL
                 .addButton(R.id.dialog_main_button, android.R.drawable.alert_dark_frame, "Lorem Ipsum")
                 .addViewToAnim(R.id.dialog_content_main, android.R.anim.fade_in)
                 .addViewToAnim(R.id.feedback_dialog_frame_content, Anim.ANIM_SPRING_IN)
+//                .addVisibilityToView(R.id.dialog_main_button, View.GONE)
                 .dismissListener(new Morpheus.OnDismissListener() {
                     @Override
                     public void onDismissDialog(@NonNull Morpheus dialog) {
