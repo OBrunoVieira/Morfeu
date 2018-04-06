@@ -21,6 +21,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.lang.ref.WeakReference;
 
 /**
@@ -380,6 +382,7 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
         }
     }
 
+    @Retention(RetentionPolicy.SOURCE)
     @IntDef({View.VISIBLE, View.INVISIBLE, View.GONE})
     public @interface Visibility {
 
