@@ -2,17 +2,12 @@ package com.brunovieira.morpheus;
 
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.util.SparseArray;
 import android.util.SparseIntArray;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,7 +19,7 @@ class Initialize {
     static void now(@NonNull Morpheus morpheus) {
         morpheusLayoutSetup(morpheus);
         setupTextView(morpheus);
-        setupBackgroundButton(morpheus);
+        setupBackground(morpheus);
         setupImageView(morpheus);
         setupVisibility(morpheus);
         setupAnimView(morpheus);
@@ -132,28 +127,19 @@ class Initialize {
         }
     }
 
-    private static void setupBackgroundButton(@NonNull Morpheus morpheus) {
+    private static void setupBackground(@NonNull Morpheus morpheus) {
         final Morpheus.Builder builder = morpheus.builder;
         if (builder != null) {
-            final SparseIntArray contentImageButton = builder.contentImageButton;
+            final SparseIntArray contentImageButton = builder.contentBackground;
             if (contentImageButton != null && contentImageButton.size() > 0) {
                 for (int i = 0; i < contentImageButton.size(); i++) {
                     final int key = contentImageButton.keyAt(i);
                     final View view = morpheus.findViewById(key);
 
-                    if (view != null && view instanceof Button) {
-                        final Button button = (Button) view;
-                        final int imageValue = contentImageButton.get(key);
-
-                        if (imageValue != 0) {
-                            final Drawable drawable = ContextCompat.getDrawable(morpheus.getContext(),
-                                    imageValue);
-
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                                button.setBackground(drawable);
-                                return;
-                            }
-                            button.setBackgroundDrawable(drawable);
+                    if (view != null) {
+                        final int imageRes = contentImageButton.get(key);
+                        if (imageRes != 0) {
+                            view.setBackgroundResource(imageRes);
                         }
                     }
                 }

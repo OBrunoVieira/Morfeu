@@ -111,7 +111,7 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
         SparseIntArray contentAnimation = new SparseIntArray();
         SparseIntArray contentVisibility = new SparseIntArray();
         SparseIntArray contentImage = new SparseIntArray();
-        SparseIntArray contentImageButton = new SparseIntArray();
+        SparseIntArray contentBackground = new SparseIntArray();
         SparseArray<CharSequence> contentText = new SparseArray<>();
         SparseArray<Animation.AnimationListener> contentAnimationListener = new SparseArray<>();
         SparseArray<OnClickListener> contentClickListener = new SparseArray<>();
@@ -175,18 +175,18 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
             return this;
         }
 
-        public Builder addButton(@IdRes int viewId, @DrawableRes int drawable, @StringRes int intRes) {
-            addButton(viewId, drawable, this.context.getString(intRes));
+        public Builder addButton(@IdRes int viewId, @DrawableRes int drawableRes, @StringRes int intRes) {
+            addButton(viewId, drawableRes, this.context.getString(intRes));
             return this;
         }
 
-        public Builder addButton(@IdRes int viewId, @DrawableRes int drawable, @NonNull CharSequence charSequence) {
+        public Builder addButton(@IdRes int viewId, @DrawableRes int drawableRes, @NonNull CharSequence charSequence) {
             if (contentText != null) {
                 contentText.put(viewId, charSequence);
             }
 
-            if (contentImageButton != null) {
-                contentImageButton.put(viewId, drawable);
+            if (contentBackground != null) {
+                contentBackground.put(viewId, drawableRes);
             }
             return this;
         }
@@ -196,7 +196,7 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
             return this;
         }
 
-        public Builder addButton(@IdRes int viewId, @DrawableRes int drawable, @NonNull CharSequence charSequence, @NonNull Typeface typeface) {
+        public Builder addButton(@IdRes int viewId, @DrawableRes int drawableRes, @NonNull CharSequence charSequence, @NonNull Typeface typeface) {
             if (contentText != null) {
                 contentText.put(viewId, charSequence);
             }
@@ -205,8 +205,8 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
                 contentTypeFace.put(viewId, typeface);
             }
 
-            if (contentImageButton != null) {
-                contentImageButton.put(viewId, drawable);
+            if (contentBackground != null) {
+                contentBackground.put(viewId, drawableRes);
             }
             return this;
         }
@@ -235,6 +235,13 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
         public Builder addText(@IdRes int viewId, @NonNull CharSequence charSequence) {
             if (contentText != null) {
                 contentText.put(viewId, charSequence);
+            }
+            return this;
+        }
+
+        public Builder addBackground(@IdRes int viewId, @DrawableRes int drawableRes) {
+            if (contentBackground != null) {
+                contentBackground.put(viewId, drawableRes);
             }
             return this;
         }
@@ -330,20 +337,23 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
 
         private void initializeSparseArray() {
             contentAnimation = new SparseIntArray();
+            contentVisibility = new SparseIntArray();
             contentImage = new SparseIntArray();
-            contentImageButton = new SparseIntArray();
+            contentBackground = new SparseIntArray();
             contentText = new SparseArray<>();
             contentAnimationListener = new SparseArray<>();
             contentClickListener = new SparseArray<>();
             contentTypeFace = new SparseArray<>();
             contentTag = new SparseArray<>();
+            contentBitmap = new SparseArray<>();
         }
     }
 
     private void clear() {
         builder.contentAnimation = null;
         builder.contentImage = null;
-        builder.contentImageButton = null;
+        builder.contentBackground = null;
+        builder.contentVisibility = null;
         builder.contentText = null;
         builder.contentAnimationListener = null;
         builder.contentClickListener = null;
