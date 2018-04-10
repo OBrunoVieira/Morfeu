@@ -19,11 +19,11 @@ public class HomeActivity extends AppCompatActivity implements Morpheus.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        View view = findViewById(R.id.home_fab);
+        final View view = findViewById(R.id.home_fab);
         if (view != null) {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View view) {
                     createDialog();
                 }
             });
@@ -48,6 +48,7 @@ public class HomeActivity extends AppCompatActivity implements Morpheus.OnClickL
                 .addButton(R.id.dialog_main_button, R.drawable.shape_button_green_normal, "Lorem Ipsum")
                 .addViewToAnim(R.id.dialog_content_main, android.R.anim.fade_in)
                 .addViewToAnim(R.id.feedback_dialog_frame_content, Anim.ANIM_SPRING_IN)
+                .addTextColor(R.id.dialog_main_button, android.R.color.white)
 //                .addVisibilityToView(R.id.dialog_main_button, View.GONE)
                 .dismissListener(new Morpheus.OnDismissListener() {
                     @Override
