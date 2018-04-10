@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.support.annotation.AnimRes;
+import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
 import android.support.annotation.IntDef;
@@ -111,6 +112,7 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
         SparseIntArray contentAnimation = new SparseIntArray();
         SparseIntArray contentVisibility = new SparseIntArray();
         SparseIntArray contentImage = new SparseIntArray();
+        SparseIntArray contentTextColor = new SparseIntArray();
         SparseIntArray contentBackground = new SparseIntArray();
         SparseArray<CharSequence> contentText = new SparseArray<>();
         SparseArray<Animation.AnimationListener> contentAnimationListener = new SparseArray<>();
@@ -246,6 +248,13 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
             return this;
         }
 
+        public Builder addTextColor(@IdRes int viewId, @ColorRes int colorRes) {
+            if (contentTextColor != null) {
+                contentTextColor.put(viewId, colorRes);
+            }
+            return this;
+        }
+
         public Builder theme(@StyleRes int themeId) {
             this.themeId = themeId;
             return this;
@@ -338,6 +347,7 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
         private void initializeSparseArray() {
             contentAnimation = new SparseIntArray();
             contentVisibility = new SparseIntArray();
+            contentTextColor = new SparseIntArray();
             contentImage = new SparseIntArray();
             contentBackground = new SparseIntArray();
             contentText = new SparseArray<>();
@@ -352,6 +362,7 @@ public class Morpheus extends AppCompatDialog implements View.OnClickListener, D
     private void clear() {
         builder.contentAnimation = null;
         builder.contentImage = null;
+        builder.contentTextColor = null;
         builder.contentBackground = null;
         builder.contentVisibility = null;
         builder.contentText = null;

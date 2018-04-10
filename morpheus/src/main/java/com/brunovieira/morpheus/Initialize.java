@@ -3,6 +3,7 @@ package com.brunovieira.morpheus;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.util.SparseArray;
 import android.util.SparseIntArray;
 import android.view.View;
@@ -20,6 +21,7 @@ class Initialize {
         morpheusLayoutSetup(morpheus);
         setupTextView(morpheus);
         setupBackground(morpheus);
+        setupTextColor(morpheus);
         setupImageView(morpheus);
         setupVisibility(morpheus);
         setupAnimView(morpheus);
@@ -140,6 +142,27 @@ class Initialize {
                         final int imageRes = contentImageButton.get(key);
                         if (imageRes != 0) {
                             view.setBackgroundResource(imageRes);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private static void setupTextColor(@NonNull Morpheus morpheus) {
+        final Morpheus.Builder builder = morpheus.builder;
+        if (builder != null) {
+            final SparseIntArray contentTextColor = builder.contentTextColor;
+            if (contentTextColor != null && contentTextColor.size() > 0) {
+                for (int i = 0; i < contentTextColor.size(); i++) {
+                    final int key = contentTextColor.keyAt(i);
+                    final View view = morpheus.findViewById(key);
+
+                    if (view != null && view instanceof TextView) {
+                        final TextView textView = (TextView) view;
+                        final int textColorRes = ContextCompat.getColor(morpheus.getContext(), contentTextColor.get(key));
+                        if (textColorRes != 0) {
+                            textView.setTextColor(textColorRes);
                         }
                     }
                 }
